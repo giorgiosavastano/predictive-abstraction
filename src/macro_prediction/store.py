@@ -27,7 +27,7 @@ def environment_metadata() -> dict:
     from . import __version__
 
     return {
-        "macro_prediction_lab": __version__,
+        "predictive_abstraction": __version__,
         "python": platform.python_version(),
         "numpy": numpy.__version__,
         "scikit_learn": sklearn.__version__,

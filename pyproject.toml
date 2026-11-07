@@ -1,6 +1,7 @@
 [project]
-name = "macro-prediction-lab"
+name = "predictive-abstraction"
 version = "0.1.0"
+authors = [{ name = "Giorgio Savastano" }]
 description = "A small experiment on task-aware compression and resource-bounded prediction"
 readme = "README.md"
 requires-python = ">=3.11"
