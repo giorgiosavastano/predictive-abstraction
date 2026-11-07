@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this experimental software, please cite the repository and its version. Update authorship and repository URL before public release."
+title: "Macro Prediction Lab: Task-Relevant Coarse-Graining in a Local-Sorting System"
+version: 0.1.0
+date-released: 2026-11-06
+authors:
+  - name: "Macro Prediction Lab contributors"
+license: MIT

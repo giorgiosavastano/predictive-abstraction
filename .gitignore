@@ -1,0 +1,64 @@
+# Python bytecode and tool caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Local environments and machine-specific configuration
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Packaging and build output
+*.egg-info/
+*.dist-info/
+.eggs/
+build/
+dist/
+
+# Scratch experiment output. Curated results under results/experiment*/ and
+# the immutable baseline remain versioned for reproducibility.
+/results/runs/*
+!/results/runs/.gitkeep
+/results/quick/
+
+# Generated plot copies at the repository root; canonical copies live under
+# results/, paper/figures/, and docs/figures/.
+/exp*.png
+/exp*.pdf
+/blog_*.png
+/blog_*.pdf
+
+# LaTeX and documentation build artifacts (source PDFs are not ignored)
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+/paper/main.pdf
+/_site/
+/docs/_site/
+/.jekyll-cache/
+
+# Editors and OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~

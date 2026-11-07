@@ -1,0 +1,34 @@
+[project]
+name = "macro-prediction-lab"
+version = "0.1.0"
+description = "A small experiment on task-aware compression and resource-bounded prediction"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy==2.3.5",
+    "scikit-learn==1.8.0",
+    "matplotlib==3.10.8",
+    "pandas>=3.1.1",
+    "scipy>=1.17.1",
+]
+
+[project.scripts]
+macro-prediction = "macro_prediction.experiment:main"
+macro-experiment1 = "macro_prediction.experiment1:main"
+macro-experiment2 = "macro_prediction.experiment2:main"
+macro-experiment2b = "macro_prediction.experiment2b:main"
+macro-analyze = "macro_prediction.analysis:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = ["pytest>=8,<10"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

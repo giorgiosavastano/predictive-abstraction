@@ -1,0 +1,167 @@
+{
+  "experiment": "experiment2",
+  "latest": {
+    "timestamp": "2026-11-06T12:17:19+0100",
+    "command": "/Users/giorgiosavastano/Developer/macro-prediction-lab/.venv/bin/macro-experiment2 --output results/experiment2",
+    "config": {
+      "seeds": [
+        1000,
+        2000,
+        3000,
+        4000,
+        5000,
+        6000,
+        7000,
+        8000,
+        9000,
+        10000
+      ],
+      "bins": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "budgets": [
+        250,
+        750,
+        2000,
+        5000
+      ],
+      "train_pool": 5000,
+      "capacity": "medium",
+      "heatmap_capacities": [
+        "small",
+        "large"
+      ],
+      "heatmap_budgets": [
+        250,
+        5000
+      ],
+      "edge_assignments": [
+        "interior",
+        "left"
+      ],
+      "local_budgets": [
+        250,
+        750,
+        2000,
+        5000
+      ],
+      "importance_bins": [
+        8
+      ],
+      "n_val": 1000,
+      "n_test": 2000,
+      "stream_offsets": {
+        "train": 0,
+        "test": 1,
+        "shift": 2,
+        "project": 3,
+        "val": 4,
+        "local_train": 10,
+        "local_test": 11,
+        "local_val": 12,
+        "floor": 20
+      }
+    },
+    "environment": {
+      "macro_prediction_lab": "0.1.0",
+      "python": "3.13.14",
+      "numpy": "2.3.5",
+      "scikit_learn": "1.8.0",
+      "scipy": "1.18.1",
+      "pandas": "3.1.1",
+      "matplotlib": "3.10.8",
+      "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "cpu_count": 10
+    }
+  },
+  "invocations": [
+    {
+      "timestamp": "2026-11-06T12:17:19+0100",
+      "command": "/Users/giorgiosavastano/Developer/macro-prediction-lab/.venv/bin/macro-experiment2 --output results/experiment2",
+      "config": {
+        "seeds": [
+          1000,
+          2000,
+          3000,
+          4000,
+          5000,
+          6000,
+          7000,
+          8000,
+          9000,
+          10000
+        ],
+        "bins": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          32,
+          64
+        ],
+        "budgets": [
+          250,
+          750,
+          2000,
+          5000
+        ],
+        "train_pool": 5000,
+        "capacity": "medium",
+        "heatmap_capacities": [
+          "small",
+          "large"
+        ],
+        "heatmap_budgets": [
+          250,
+          5000
+        ],
+        "edge_assignments": [
+          "interior",
+          "left"
+        ],
+        "local_budgets": [
+          250,
+          750,
+          2000,
+          5000
+        ],
+        "importance_bins": [
+          8
+        ],
+        "n_val": 1000,
+        "n_test": 2000,
+        "stream_offsets": {
+          "train": 0,
+          "test": 1,
+          "shift": 2,
+          "project": 3,
+          "val": 4,
+          "local_train": 10,
+          "local_test": 11,
+          "local_val": 12,
+          "floor": 20
+        }
+      },
+      "environment": {
+        "macro_prediction_lab": "0.1.0",
+        "python": "3.13.14",
+        "numpy": "2.3.5",
+        "scikit_learn": "1.8.0",
+        "scipy": "1.18.1",
+        "pandas": "3.1.1",
+        "matplotlib": "3.10.8",
+        "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "cpu_count": 10
+      }
+    }
+  ]
+}

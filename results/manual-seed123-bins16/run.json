@@ -1,0 +1,19 @@
+{
+  "seed": 123,
+  "array_size": 64,
+  "horizon": 12,
+  "bins": 16,
+  "train_sizes": [
+    250,
+    750,
+    2000,
+    5000
+  ],
+  "test_episodes": 2000,
+  "versions": {
+    "numpy": "2.3.5",
+    "scikit_learn": "1.8.0",
+    "matplotlib": "3.10.8"
+  },
+  "note": "A simplified local sorting simulator, not a paper replication."
+}
