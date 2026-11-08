@@ -10,9 +10,11 @@ image:
 
 *By Giorgio Savastano, PhD · [Background and experience](https://www.linkedin.com/in/giorgiosavastano/) · [Publications](https://scholar.google.com/citations?user=loRr1d8AAAAJ&hl=en)*
 
-You can remember every word of a conversation and still miss its point. That gap between having information and understanding it is what interests me here, especially when we talk about intelligence in machines.
+When data and time are limited, can a machine learn to predict a system better from a useful summary than from every available detail?
 
-Let me take you on a short journey through some ideas borrowed from literature, philosophy and physics, down to a small hypothesis we can actually test: when data and time are limited, can a machine learn to predict a system better from a useful summary than from every available detail?
+As humans, somethime we can remember every word of a conversation and still miss its point. That gap between having information and understanding it is what fashinate me here, especially when we talk about intelligence in machines.
+
+Let me take you on a short journey through some ideas borrowed from literature, philosophy and physics, down to a small hypothesis we can actually test: 
 
 *6 November 2026. Code, raw results and the research note are in [the repository]({{ site.github.repository_url }}). The README explains how to reproduce the experiments and figures; a one-minute demo is also available there.*
 
