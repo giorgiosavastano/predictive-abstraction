@@ -5,6 +5,12 @@ description: "A small, fully controlled experiment on when a coarse description 
 
 # The Art of Forgetting: From Borges to a Hypothesis About Intelligence
 
+*By Giorgio Savastano, PhD · [Background and experience](https://www.linkedin.com/in/giorgiosavastano/) · [Publications](https://scholar.google.com/citations?user=loRr1d8AAAAJ&hl=en)*
+
+You can remember every word of a conversation and still miss its point. That gap between having information and understanding it is what interests me here, especially when we talk about intelligence in machines.
+
+Let me take you on a short journey through some ideas borrowed from literature, philosophy and physics, down to a small hypothesis we can actually test: when data and time are limited, can a machine learn to predict a system better from a useful summary than from every available detail?
+
 *6 November 2026. Code, raw results and the research note are in [the repository]({{ site.github.repository_url }}). The README explains how to reproduce the experiments and figures; a one-minute demo is also available there.*
 
 ## 1. The man who remembered everything
@@ -46,8 +52,6 @@ The connection to intelligence remains a hypothesis. [François Chollet](https:/
 For this I built a world where I can control the rules and repeat the same situation many times. Start with an array of 64 numbers, from 0 to 63, in sorted order. Scramble a chunk of it, sometimes two. Then let neighbouring numbers compare and swap if they are in the wrong order. One round, or sweep, checks the alternating pairs in two phases, so each comparison is local. Swaps sometimes fail, and one region has less reliable exchanges than the rest. After twelve rounds, how much disorder will be left?
 
 Here disorder has a simple meaning: how far each number is from its correct position, averaged over the array. If every number is home, it is zero. The setup is inspired by the [self-sorting arrays studied by Taining Zhang, Adam Goldstein and Michael Levin](https://doi.org/10.1177/10597123241269740). My simulator is much simpler and is not a replication of their experiments or a model of biological intelligence.
-
-Yes, this makes the reasoning clearer. I’d repair the grammar, clarify “perfect predictor”, and retain the units:
 
 Because each swap attempt can succeed or fail probabilistically, the same starting state can have different futures. Therefore, even a predictor that knows the exact average remaining disorder after twelve rounds will make errors on individual runs because of this randomness. To estimate this error floor, I kept the initial ordering and swap probabilities fixed for each starting configuration in the test set, then simulated 32 independent futures. This allowed me to estimate how much the remaining disorder varies purely because of randomness. Combining that variation across the test set gives an estimated floor of about 0.19 positions per element, measured as root mean squared error, or RMSE.
 
@@ -142,3 +146,9 @@ Sources and further reading:
 - Coarse descriptions and prediction: [Shalizi & Moore, *What is a macrostate?*](https://arxiv.org/abs/cond-mat/0303625); [Israeli & Goldenfeld, *Coarse-graining of cellular automata, emergence, and the predictability of complex systems* (2006)](https://doi.org/10.1103/PhysRevE.73.026203); [Crutchfield, *Between order and chaos* (2012)](https://doi.org/10.1038/nphys2190). On the separate debate about causal emergence: [Hoel (2017)](https://doi.org/10.3390/e19050188) and [Eberhardt & Lee (2022)](https://doi.org/10.3390/philosophies7020030).
 
 For a broader philosophical motivation, [Demis Hassabis describes his conjecture that information is more fundamental than matter and energy](https://www.amacad.org/publication/daedalus/ai-ultimate-tool-science-conversation-demis-hassabis). Our sorting experiments do not test that conjecture.
+
+---
+
+## About the author
+
+I’m a remote sensing scientist with a PhD in geodesy and geomatics from Sapienza University of Rome. At Spire, I work on turning satellite measurements into estimates of physical quantities such as soil moisture; before joining Spire, I held a NASA Postdoctoral Program fellowship at the Jet Propulsion Laboratory.
