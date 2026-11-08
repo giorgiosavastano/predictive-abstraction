@@ -36,9 +36,9 @@ regions on identical episodes shows a shallow interior optimum at 8--16 regions
 that disappears at small budgets and moves finer as resources grow. Feature-set
 ablations attribute most of the benefit to three engineered global statistics,
 especially a displacement--unreliability interaction, rather than to spatial
-coarse-graining itself: three global numbers come within 10\% of the best model,
-and even a 195-feature engineered representation with a larger encoding cost than
-the raw state outperforms it by 26\%. Random projections are harmful at every
+coarse-graining itself: three global numbers reach an error about 11\% above the best medium model,
+and even a 195-feature engineered representation with a larger marginal-entropy encoding bound than
+the raw state outperforms it by 26\%. Random projections do not match the engineered features at any tested
 size, and a local prediction target reverses the preference for coarse
 representations in every seed. We conclude that task-relevant \emph{supplied}
 representations reliably improve finite-resource prediction in this system, that
@@ -51,9 +51,11 @@ twelve sweeps ahead whose true conditional means agree to within 8\% of their
 variance (closure index $0.918\pm0.004$), against 0.27 for a matched random
 projection and 0.57 for the disorder scalar alone; re-ranking matched
 configurations by microscopic detail recovers about one further point, and by
-the previous macrostate essentially nothing. The three variables are thus an
-approximately autonomous, approximately Markov macroscopic description for this
-target. We position these results as the first two stages of a programme on
+the previous macrostate a small nonzero improvement. This supports approximate conditional-mean closure for the measured
+observables over the tested distribution and horizons, not full distributional
+sufficiency, a general autonomous macroscopic law or Markovian dynamics. The
+small nonzero history-refinement effect does not establish independence from
+the past. We position these results as the first two stages of a programme on
 abstraction discovery, transfer and adaptation, and propose minimal
 falsification tests for the later stages. Code, raw results and figures are
 released for replication.
@@ -97,9 +99,8 @@ spatial detail can be removed before performance degrades, and is there an
 optimal intermediate scale (Experiment~2)? Is any benefit attributable to
 coarse-graining as such, to the particular engineered statistics, or merely to
 dimensionality (ablations within Experiment~2)? And, independently of any
-learner, do the sorting dynamics approximately close over the useful
-variables, so that configurations with the same macrostate have the same
-macroscopic future (Experiment~2b)?
+learner, do configurations with similar summaries have similar conditional-mean
+futures for the measured observables (Experiment~2b)?
 
 The question is one component of a broader interest, which we state here so
 that the limits of the present contribution are clear. The working hypothesis
@@ -262,7 +263,8 @@ whose dynamics are closed and often simpler than the microscopic rule, so that
 a system can be unpredictable in detail and predictable at some level of
 description. These are the formal tools for the question of
 Section~\ref{sec:emergent}, whether our macroscopic variables approximately
-close over themselves; nothing in our experiments measures closure.
+close over themselves; Experiment~2b tests agreement in conditional means, a necessary but
+insufficient part of full distributional closure.
 
 \paragraph{Causal emergence.}
 \citet{hoel2013} and \citet{hoel2017} argue that, under an interventionist
@@ -278,8 +280,8 @@ and to a distribution that is not the system's own. We take no position on
 this debate. What matters for us is the distinction it makes vivid:
 \emph{observational predictive sufficiency} (a macrostate predicts the future
 macrostate as well as the microstate does) is a weaker and better-defined
-property than \emph{causal emergence}, and it is the former that our proposed
-experiments would measure.
+property than \emph{causal emergence}, and Experiment~2b measures only agreement in conditional means, which is weaker
+still than full observational predictive sufficiency.
 
 \paragraph{Representation transfer and analogy.}
 Gentner's structure-mapping theory \citep{gentner1983} holds that analogy is a
@@ -453,8 +455,8 @@ $\mu_i$ the realisation mean of the future, the excess variance is the pair
 mean of $(\mu_i-\mu_j)^2/2$ corrected for realisation noise, and the closure
 index is $1-\text{excess}/V_{\text{total}}$, where $V_{\text{total}}$ is the
 noise-corrected variance of conditional means across configurations. A closure
-of 1 means the macrostate determines the future as well as the microstate
-does. Candidates: initial disorder (1), global (3), macro at 1--32 bins,
+of 1 means no residual disagreement in conditional means in this diagnostic;
+it does not imply identical future distributions. Candidates: initial disorder (1), global (3), macro at 1--32 bins,
 regional-8, random projections of 3/6/27/99 dimensions, and the raw state. The
 estimator is biased downward for high-dimensional $\phi$, whose neighbours are
 farther apart, so it is also computed at 2,500 and 5,000 configurations as a
@@ -471,8 +473,8 @@ The emergence reading fails if the global or macro-8 closure is not clearly
 above that of a random projection of matched size, or not clearly above the
 disorder scalar at the full horizon; it is qualified if raw re-ranking
 recovers a large part of the residual (microscopic detail matters) or if
-history re-ranking beats present-global re-ranking (the macrostate is not
-Markov).
+history re-ranking beats present-global re-ranking (evidence of history
+dependence in these conditional means, rather than a complete Markov test).
 
 \section{Results}
 
@@ -538,9 +540,10 @@ worse than large for every representation, consistent with over-fitting under a
 fixed learning rate without early stopping; validation selection never chooses
 it for the macro or full representations.
 
-Controls: the random projection is the worst representation at every budget and
-capacity (macro $-$ random $=-0.30$ to $-0.48$, 46--52\% relative, 10/10
-seeds), worse than the single disorder scalar at medium capacity. Full + macro
+Controls: the random projection has higher mean error than macro and full state
+at every tested budget and capacity (macro $-$ random $=-0.30$ to $-0.48$, 46--52\% relative, 10/10
+seeds), worse than the single disorder scalar at the smallest budget, but not in
+every setting. Full + macro
 is marginally \emph{worse} than macro alone in every cell (by 0.001--0.012;
 macro lower in 8--10 of 10 seeds). On the shifted split the macro advantage is
 larger (large/5,000: $0.336\pm0.014$ vs.\ $0.481\pm0.021$, paired $-0.145$
@@ -564,8 +567,8 @@ $[-0.158,-0.132]$).
 Costs (Figure~\ref{fig:cost}): feature extraction is negligible (0.4\,ms raw,
 2.6\,ms macro, 3.1\,ms projection per 5,000 episodes). Fit time is set by the
 preset and secondarily by feature count (medium: 0.44\,s full vs.\ 0.30\,s
-macro; large: 4.03\,s vs.\ 3.20\,s). Under compute matching the advantage
-widens: macro at medium (0.31\,s, RMSE 0.366) beats full state at large
+macro; large: 4.03\,s vs.\ 3.20\,s). In a measured cost/error comparison, rather than fixed-time
+training, macro at medium (0.31\,s, RMSE 0.366) beats full state at large
 (4.06\,s, RMSE 0.401) at $13\times$ lower cost.
 
 \begin{figure}[t]
@@ -651,7 +654,7 @@ as resources grow.
 \end{figure}
 
 Ablations (Figure~\ref{fig:size}): the three global statistics alone reach
-0.405, within 10\% of the best model and 0.12 better than the raw state. The
+0.405, about 11\% above the best medium model and 0.12 better than the raw state. The
 regional-only series has a pronounced interior optimum (0.684 at 1 bin, 0.397
 at 8, 0.519 at 64). Permutation importance of the 8-bin model is dominated by
 the displacement $\times$ unreliability interaction ($0.932\pm0.030$ RMSE
@@ -725,13 +728,14 @@ relative to the unreliable region, which only the interaction feature carries.
   \label{fig:convergence}
 \end{figure}
 
-The estimator has converged for low-dimensional abstractions (global
-$0.912\to0.916\to0.918$ at $2{,}500\to5{,}000\to10{,}000$) and not for
-high-dimensional ones (macro-8 $0.857\to0.881\to0.899$; raw
-$0.622\to0.666\to0.706$; Figure~\ref{fig:convergence}). The ordering macro-8
-$<$ global, although macro-8 contains strictly more information, is therefore a
-finite-sample matching artefact; only matched-size comparisons are
-interpretable, and the high-dimensional values are lower bounds.
+The global estimate changes relatively little over the tested sample sizes
+($0.912\to0.916\to0.918$ at $2{,}500\to5{,}000\to10{,}000$); the
+higher-dimensional estimates are still rising (macro-8
+$0.857\to0.881\to0.899$; raw $0.622\to0.666\to0.706$;
+Figure~\ref{fig:convergence}). This indicates downward matching bias,
+particularly at high dimensionality, rather than establishing rigorous lower
+bounds or complete convergence. Matched-size controls reduce, but do not
+eliminate, geometric differences between representations.
 
 \begin{figure}[t]
   \centering
@@ -747,8 +751,9 @@ by $+0.0103$ $[0.0094,0.0112]$ over the random re-rank control (10/10 seeds);
 re-ranking by the previous macrostate raises it by $+0.0015$
 $[0.0005,0.0025]$. At the macro-8 level, present-global re-ranking ($+0.081$
 over random) does as much as history re-ranking ($+0.072$), and history is
-slightly worse than present-global ($-0.009$ $[-0.009,-0.008]$): the gain
-from history is tighter matching of the present macrostate, not memory
+slightly worse than present-global ($-0.009$ $[-0.009,-0.008]$): this comparison is consistent with improved present-state matching
+rather than evidence for a large history effect, but it does not rule out
+dependence on a longer or richer past
 (Figure~\ref{fig:refinements}).
 
 \section{Discussion}\label{sec:discussion}
@@ -762,24 +767,26 @@ programme without being evidence for it).
 \subsection{The baseline finding survives, in a qualified form (finding and interpretation)}
 Ten seeds, four capacities and validation-based selection all agree that the
 engineered macroscopic representation lowers the error a gradient-boosting
-learner attains on the global target, with a consistency (130/130 cells, every
-seed) that leaves no room for a seed artefact. But the size of the effect is a
+learner attains on the global target, consistently across all 130 tested
+seed $\times$ budget $\times$ capacity cells. But the size of the effect is a
 strong function of resources: it is roughly halved error at 250 episodes and a
 17\% reduction at 5,000 episodes with the larger model. The raw-state curve has
 not converged, and both curves sit far above the noise floor, so the data are
-consistent with the information-ordering argument that the gap closes in the
-limit. The claim supported is therefore not that the summary is better in an
+consistent with a declining gap, motivating larger-budget tests. The
+Bayes-risk ordering does not guarantee that this particular learner will
+converge to an optimal representation. The claim supported is therefore not that the summary is better in an
 absolute sense but that it buys a large head start for a bounded learner, a head
-start that is worth more when the learner is more constrained and that is larger
-still under compute matching.
+start that is worth more when the learner is more constrained and is
+also visible in the measured cost/error comparison.
 
 \subsection{It is the content, not the compression (finding and interpretation)}
 Three results separate the effect of \emph{what} is kept from the effect of
-\emph{how much} is kept. The dimension-matched random projection is harmful at
-every size, worse than the raw state and worse even than a single scalar. Three
+\emph{how much} is kept. The dimension-matched random projection has higher mean error than the raw
+state and engineered summary at every tested Experiment~1 setting. It loses
+to the disorder scalar at the smallest budget but not in every setting. Three
 global numbers capture most of the benefit, and one engineered interaction
 carries most of the predictive weight. And a 195-feature engineered
-representation with a larger encoding cost than the raw state still beats it by
+representation with a larger marginal-entropy encoding bound than the raw state still beats it by
 a wide margin. A reading of these experiments as evidence that ``throwing
 information away'' helps would be wrong; the engineered features re-express the
 state in coordinates (displacement relative to the known goal configuration,
@@ -794,8 +801,8 @@ With the global features present, the resolution sweep shows a shallow interior
 optimum at 8--16 bins that is absent at 250 episodes and moves finer as data and
 capacity grow, the pattern expected from a bias--variance trade-off. The
 regional-only ablation shows the same trade-off in sharper form: 64-bin
-features contain strictly more information than 8-bin features and are learned
-strictly worse at every budget. This is the one place where ``less is more''
+features use more coordinates than 8-bin features and give higher mean error
+at every tested budget. No strict mutual-information ordering was measured. This is the one place where ``less is more''
 holds in its literal sense, and it holds for a bounded learner on a fixed
 budget, not for information content.
 
@@ -863,80 +870,61 @@ link in a chain and measures its size. The progression we have in mind is:
 The conceptual progression \emph{information availability $\to$ useful
 representation $\to$ efficient prediction $\to$ generalization and transfer}
 maps onto these stages. Our experiments show that the second and third are
-distinct from the first (the raw state has all the information and predicts
-worst), and that the second depends on the task. They say nothing yet about the
+distinct from the first (the raw state contains the information needed to compute the summary,
+yet this learner predicts the global target less accurately from it), and that the second depends on the task. They say nothing yet about the
 fourth.
 
 \subsection{Emergent structure and predictive abstraction (finding, interpretation and hypothesis)}\label{sec:emergent}
-The features that work in this system describe collective properties of the
-array: how far elements are from their goal positions on average, how often
-neighbours are inverted, and where the disorder overlaps the unreliable
-region. These are aggregate quantities produced by many local interactions,
-and the target, the array's global recovery, is itself a collective outcome.
-Experiments~1--2 could not say whether their predictive success reflects
-something about the \emph{system}, namely that the sorting dynamics
-approximately close over a few collective variables, or only something about
-the \emph{learner}, namely that we chose coordinates in which a tree ensemble
-finds the target easy. The distinction is operational. Write $X_t$ for the
-microstate, $Z_t=\phi(X_t)$ for a macroscopic abstraction and $\tau$ for a
-horizon. A macroscopic description is approximately autonomous at horizon
-$\tau$ when
+The successful features describe collective properties of the array:
+displacement, adjacent inversions and the overlap of disorder with unreliable
+exchanges. Their usefulness to a tree ensemble does not by itself establish
+that the dynamics close over them. A stronger criterion, for $X_t$ the
+microstate and $Z_t=\phi(X_t)$, would be full observational predictive
+sufficiency:
 \begin{equation}
-  P(Z_{t+\tau}\mid X_t)\approx P(Z_{t+\tau}\mid Z_t),
+ P(Z_{t+\tau}\mid X_t)\approx P(Z_{t+\tau}\mid Z_t).
 \end{equation}
-that is, when the microscopic details left out of $Z_t$ contribute little
-additional information about the future macrostate; in information terms,
-$I(Z_{t+\tau};X_t\mid Z_t)\approx 0$ \citep{pfante2014,kemeny1976}.
-Experiment~2b measures a finite-sample proxy for this, without a learner, and
-the answer is that \textbf{the three global summaries are an approximately
-autonomous level of description for the global target in this system}
-(finding). Matched on three numbers, configurations have futures twelve sweeps
-ahead whose conditional means agree to within 8\% of their variance; a matched
-random projection reaches 27\%, and the disorder scalar alone 57\%, so what
-closes is not sortedness in general but the specific combination that
-includes the disorder--unreliability interaction. The residual 8\% is an upper
-bound on what the microstate adds: re-ranking matched configurations by
-raw-state distance recovers about one point of it, and re-ranking by the
-previous macrostate recovers essentially nothing, so the coarse-grained
-dynamics are approximately Markov in the instantaneous global state
-(interpretation; the raw re-ranking is itself a lower bound on the
-microscopic contribution, because nearest raw neighbours in 128 dimensions
-remain far apart).
+This would constrain the entire future distribution
+\citep{pfante2014,kemeny1976}. Experiment~2b does not measure that condition
+or conditional mutual information. It tests a weaker implication: whether
+configurations with similar $Z_t$ have similar conditional means
+$E[Y_{t+\tau}\mid X_t]$ for the selected future observable. The closure index
+is a noise-corrected nearest-neighbour diagnostic of this agreement. We use
+``approximate conditional-mean closure'' for this restricted result.
 
-This changes the status of the ``convenient coordinates'' alternative. It is
-no longer sufficient as an explanation of Experiments~1--2: the variables that
-make the learner efficient are also the variables over which the dynamics
-close, and a learner that found them would be finding a property of the
-system. It does not, however, settle the other caveats. The criterion is
-horizon- and distribution-dependent, and we measured it for horizons up to 12
-and for configurations drawn from the episode distribution after two sweeps
-only. It concerns the future \emph{macrostate}: the local target is not closed
-over any coarse representation, as Experiments~1--2 show, and no closure
-result changes that. It is observational, and establishes no causal emergence
-in the sense of \citet{hoel2017} and no ontological claim. The features remain
-supplied, so nothing is implied about discovery. And the estimator is a
-nearest-neighbour approximation that is converged for three to six dimensions
-and biased downward above, which is why comparisons across dimensionality are
-made only at matched size.
+For the global target twelve sweeps ahead, the three supplied summaries give
+a closure index of $0.918\pm0.004$, leaving about 8\% of the noise-corrected
+variance in conditional means as residual disagreement in this estimate.
+The matched random projection gives 0.266 and initial disorder 0.572. This
+is learner-free evidence of a regularity in average recovery, for
+configurations sampled after two sweeps and horizons up to twelve further
+sweeps. It does not establish a closed law for the full macroscopic trajectory.
 
-Several alternative explanations of the learning results remain live and are
-now sharper. The features encode substantial prior knowledge of the simulator,
-including the goal configuration. The learner's advantage may still be partly
-inductive bias (axis-aligned splits on well-chosen coordinates); a
-locality-aware architecture on the raw state is the untested competitor, and
-the closure result predicts that such a model would have to
-\emph{reconstruct} these three quantities to match the macro learner, which
-is a testable prediction for Experiment~3. The useful level depends on task
-and horizon. And some systems admit no useful low-dimensional coarse-grained
-dynamics at all; this one does, which is a fact about this system rather than
-about complex systems in general.
+Raw-state refinement adds 0.0103 and the previous sweep's summary adds 0.0015
+over random refinement. The latter is small but nonzero. One history depth
+and conditional means cannot establish the Markov property, which concerns
+the entire past and future distributions. Nor do these refinements bound all
+the information in omitted details: matching is approximate and
+high-dimensional estimates are still rising with sample size. The local
+learning-control reversal is evidence of task dependence; no local-target
+closure test was run. There were no interventions to investigate causal
+emergence \citep{hoel2017}.
+
+The learner's inductive bias and the supplied goal knowledge remain relevant
+explanations of the learning advantage. A locality-aware raw-state learner is
+still an important missing competitor. It need not reconstruct these exact
+three features to match their performance: the experiments neither identify
+a unique sufficient representation nor prove that a particular feature is
+necessary. Autonomous discovery, transfer and adaptation remain open questions.
 
 \subsection{Relation to prior frameworks}
 Our results are consistent with the information-bottleneck view that
 task-relevant compression is what matters, and with the computational-mechanics
 intuition that a few well-chosen statistics can be nearly sufficient for a
-process's future. They do not estimate mutual information, do not identify
-causal states, do not measure closure, and do not exhibit causal emergence in
+process's future. They do not estimate mutual information or identify causal states.
+Experiment~2b measures approximate conditional-mean closure, not full
+predictive sufficiency or Markovian dynamics. The experiments do not establish
+causal emergence in
 the sense of \citet{hoel2013}, \citet{hoel2017} or \citet{rosas2020}. They do not measure intelligence in
 Chollet's sense \citep{chollet2019}: we vary experience (budget) and capacity
 but hold the task fixed and supply the prior. They also say nothing about
@@ -972,15 +960,17 @@ autonomous discovery: every representation here was supplied.
 \item \textbf{Multiple comparisons.} Many paired tests are reported; the
   primary conclusions rest on effects that are large relative to their
   intervals and consistent across all seeds, not on borderline $p$-values.
-\item \textbf{Closure estimator.} Nearest-neighbour matching is converged for
-  three to six dimensions and biased downward above; the closure values for
-  macro-8 and the raw state are lower bounds, and closure was measured for
-  one configuration distribution, horizons to 12 and one history depth.
+\item \textbf{Closure estimator.} Experiment~2b compares conditional means of
+  selected observables under one configuration distribution, horizons to
+  twelve and one history depth. Nearest-neighbour matching is approximate;
+  sample-size checks indicate high-dimensional downward bias, not rigorous
+  lower bounds or complete low-dimensional convergence. Full future
+  distributions were not compared.
 \item \textbf{Conflations to avoid.} Prediction accuracy is not
   transferability and neither is intelligence; dimensionality is not
   information; success across seeds is not transfer; predictive usefulness of
-  a macroscopic variable is not dynamical autonomy (Experiment~2b measures the
-  latter separately), and approximate predictive sufficiency is not causal
+  a macroscopic variable is not dynamical autonomy (Experiment~2b separately measures a weaker
+  conditional-mean diagnostic), and approximate predictive sufficiency is not causal
   emergence.
 \end{itemize}
 
@@ -1070,14 +1060,14 @@ sweeps), horizons to 12, one history depth and two future measures. Its
 natural extensions are: closure over configurations drawn late in recovery
 and over the shifted fault distribution; longer horizons, to find where the
 global summaries stop closing; richer histories (several sweeps, the full
-macro vector), to confirm the Markov property beyond one step; array lengths
+macro vector), to test for dependence on a richer past without presuming a Markov property; array lengths
 other than 64 and other disturbance types, to see whether the same three
 variables close elsewhere, which is the system-side counterpart of the
 transfer question; and a closure test for the \emph{local} target, which we
 expect to fail for every coarse representation and which would make the task
 dependence of emergence explicit. A dimension-fair estimator remains an open
-methodological need; at this sample size the plain nearest-neighbour
-estimator is a lower bound above six dimensions.
+methodological need; at this sample size high-dimensional nearest-neighbour estimates remain
+limited by imperfect matching, and are not rigorous bounds.
 
 \subsection{Nearer-term controls}
 Before any submission the raw state should be given a locality-aware
@@ -1108,11 +1098,12 @@ it, that what makes a representation useful is the structure it preserves
 rather than the amount it discards, and that the right structure depends on the
 question. Whether that structure is a property of the system or only a
 convenient set of coordinates for one learner is a separate and measurable
-question, and here it has an answer: configurations that agree on the three
-global summaries agree on their macroscopic future to within 8\% of its
-variance, with no help from the past and little from microscopic detail, so
-the sorting dynamics approximately close over the variables the learner found
-useful. Whether a system can find such structure on its own, carry it to
+question, and here it has an answer: the conditional-mean closure diagnostic leaves about 8\% residual
+disagreement in average recovery when configurations are matched on the
+three global summaries. Microscopic and one-step-history refinements give
+small nonzero improvements. This supports approximate mean closure in the
+tested setting, without establishing full distributional sufficiency,
+Markovian dynamics or causal emergence. Whether a system can find such structure on its own, carry it to
 situations it has not seen, and give it up when it stops working, remains to be
 tested; the experiments proposed in Section~\ref{sec:future} are the smallest
 we can think of that could show it cannot.

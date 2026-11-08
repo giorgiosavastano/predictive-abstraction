@@ -32,11 +32,11 @@ The original pre-registered plan listed three experiments. The first two have no
 
 ## 2b. Emergent predictive structure — **executed (Experiment 2b)**
 
-**Question:** Do microscopic configurations with the same macroscopic representation have the same macroscopic future? That is, do the sorting dynamics approximately close over the macro variables (P(Z_{t+τ} | X_t) ≈ P(Z_{t+τ} | Z_t)), or are the variables merely convenient coordinates for one learner?
+**Question:** Do microscopic configurations with similar summaries have similar average macroscopic futures? This tests a necessary part of full observational predictive sufficiency, rather than the full distributional condition P(Z_{t+τ} | X_t) ≈ P(Z_{t+τ} | Z_t).
 
 **Done:** 10 seeds × 10,000 configurations × 16 futures, nearest-neighbour matching in each candidate abstraction, horizons 1–12, matched-size random projections and the disorder scalar as controls, convergence check at three sample sizes, and controlled refinements (raw detail, previous macrostate, present macrostate, random).
 
-**Outcome:** Not falsified. Closure at τ = 12 is 0.918 ± 0.004 for the three global summaries (0.27 for a matched random projection, 0.57 for the disorder scalar); raw detail recovers ≈ 1 point more, the previous macrostate ≈ 0. The estimator is a lower bound above six dimensions.
+**Outcome:** Evidence for approximate conditional-mean closure in the tested setting. At τ = 12 the index is 0.918 ± 0.004 for the three global summaries (0.27 for a matched random projection, 0.57 for initial disorder). Raw refinement adds 0.0103 and one-step history 0.0015 over random refinement. These are small nonzero effects, not proof of a Markov description. Higher-dimensional estimates are limited by imperfect matching, as the sample-size checks show.
 
 **Not done (still open):** other configuration distributions (late recovery, shifted faults); longer horizons; deeper histories; other array lengths and disturbance types; the local target (expected to fail); a dimension-fair closure estimator.
 
@@ -76,7 +76,7 @@ The original pre-registered plan listed three experiments. The first two have no
 | Pre-declared primary target and metric | met (global displacement, test RMSE) |
 | Independent test data held out from all selection | met (validation split added) |
 | ≥ 10 seeds, paired intervals, negative controls | met (10 seeds; 20 originally proposed) |
-| Learner-free evidence that the useful variables are a level of description of the system | met for the global target (Experiment 2b); not for other targets or systems |
+| Learner-free agreement in conditional-mean futures | supported for the tested global observables (Experiment 2b); full distributional sufficiency and Markov dynamics remain open |
 | Strong architecture-aware raw-state baselines | **not met** |
 | Dimension-matched baselines | met (random projections at every size) |
 | Computational budget accounting | met (timings + model sizes; single machine) |

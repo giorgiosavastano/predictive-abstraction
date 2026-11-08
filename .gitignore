@@ -55,6 +55,11 @@ dist/
 /_site/
 /docs/_site/
 /.jekyll-cache/
+/docs/.jekyll-cache/
+/docs/.jekyll-metadata
+/.sass-cache/
+/docs/.sass-cache/
+/.qodo/
 
 # Editors and OS files
 .DS_Store

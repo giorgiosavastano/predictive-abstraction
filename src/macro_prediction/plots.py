@@ -492,7 +492,7 @@ def blog_closure(summary: pd.DataFrame, path: Path) -> None:
                       & (summary.refined_by == "none")]
         labels = {"global": "3 global numbers (summary)", "initial_disorder": "Initial disorder (1 number)",
                   "random-3": "Random combinations (3 numbers)",
-                  "raw": "Full state (128 numbers;\nlower-bound estimate)"}
+                  "raw": "Full state (128 numbers;\nmatching-limited estimate)"}
         fig, ax = plt.subplots(figsize=(7.2, 4.6))
         for name in ("global", "initial_disorder", "raw", "random-3"):
             rows = sub[sub.representation == name].sort_values("tau")

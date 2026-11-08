@@ -1,8 +1,22 @@
 title: Giorgio Savastano
 description: When a coarse description predicts better than the complete state, and when it doesn't.
 theme: jekyll-theme-minimal
+url: https://giorgiosavastano.github.io
+baseurl: /predictive-abstraction
+repository: giorgiosavastano/predictive-abstraction
+lang: en-GB
+author: Giorgio Savastano
+twitter:
+  card: summary_large_image
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
 # GitHub Pages serves this folder; the essay is index.md. The other Markdown
 # files here (methods, manuscript, next experiments) are published as plain
 # pages too. {{ site.github.repository_url }} is filled in by GitHub.
 exclude:
   - figures/*.pdf
+  # Preserve the editorial sources in Git, but do not publish them as pages.
+  - index_draft.md
+  - editorial-review.md
+  - blog-draft.md

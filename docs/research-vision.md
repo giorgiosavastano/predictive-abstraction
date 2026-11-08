@@ -22,14 +22,14 @@ An emergent property can exist without being recognized. An abstraction can be u
 5. An intelligent system may benefit from discovering these useful levels of description.
 6. More sophisticated intelligence may involve transferring and adapting them across situations.
 
-Steps 1–3 are well established in physics for particular systems (fluids, critical phenomena, coarse-grained cellular automata), and Experiment 2b now establishes step 3 for the sorting simulator: three supplied collective variables approximately close over the global recovery dynamics. Step 4 is what Experiments 1–2 measure, for supplied representations, in one system. Steps 5–6 are hypotheses.
+Steps 1–3 are well established in physics for particular systems (fluids, critical phenomena, coarse-grained cellular automata). Experiment 2b supplies narrower evidence in the sorting simulator: configurations matched on three supplied collective variables have similar conditional-mean futures for the measured observables. This supports approximate mean closure in the tested setting, not a general autonomous macroscopic law. Step 4 is what Experiments 1–2 measure for supplied representations in one system. Steps 5–6 remain hypotheses.
 
 ## Four stages
 
 | Stage | Question | Status |
 | :-- | :-- | :-- |
 | **1. Useful abstraction** | Can supplied macroscopic representations improve prediction under resource constraints? | **Established in one system** (Experiments 1–2, 10 seeds): yes, by 44% at 250 examples falling to 17% at 5,000 with validation-selected capacity; the benefit comes from the content of the representation, not its size; it reverses for a local target. See `results/experiment1/README.md`, `results/experiment2/README.md`. |
-| **2. Emergent predictive structure** | Do the useful macroscopic variables capture approximately autonomous, stable dynamics of the system, as opposed to merely convenient coordinates for one learner? | **Established in one system, for one target** (Experiment 2b, 10 seeds, learner-free): configurations matched on the three global summaries have futures 12 sweeps ahead whose conditional means agree to within 8% of their variance (closure 0.918 ± 0.004), vs. 0.27 for a matched random projection and 0.57 for the disorder scalar; microscopic detail recovers ≈ 1 point more, the previous macrostate essentially nothing (approximately Markov). Not tested: other distributions, longer horizons, the local target, other systems. See `results/experiment2b/README.md`. |
+| **2. Emergent predictive structure** | Do the useful macroscopic variables capture regularities in the system’s future beyond their usefulness to a learner? | **Investigated through a conditional-mean diagnostic** (Experiment 2b, 10 seeds, learner-free): closure index 0.918 ± 0.004 at twelve sweeps for the global summaries, versus 0.27 for a matched random projection and 0.57 for initial disorder. Raw refinement adds about 0.0103; one-step history adds 0.0015 over random refinement. This is evidence for approximate mean closure over the sampled configurations, not full predictive sufficiency or Markov dynamics. Other distributions, horizons, targets and systems remain untested. See `results/experiment2b/README.md`. |
 | **3. Autonomous abstraction discovery** | Can a learning system find these variables without being told which features matter, and at what cost? | **Hypothesis; not started.** Experiment 3 (manuscript §11.2): a 3-dimensional learned bottleneck must reach the global-only error (0.405) and expose the displacement × unreliability interaction to a linear probe. |
 | **4. Transfer and adaptation** | Can discovered representations be reused across unfamiliar but structurally related systems, and can the system recognize when they must change? | **Hypothesis; not started.** Experiments 4 and 5 (manuscript §11.3–11.4), with surface-feature, negative-transfer and non-adapting controls. Reuse across seeds of one simulator does not count. |
 
@@ -39,7 +39,7 @@ The stages are ordered by what each presupposes, not as a causal chain: stage 2 
 
 - The macroscopic features work because they encode substantial prior knowledge of the simulator, including the goal configuration; disorder and displacement are near-obvious features for a sorting objective.
 - Their advantage reflects the inductive bias of tree ensembles (axis-aligned splits on well-chosen coordinates) rather than any property of the dynamics; a locality-aware architecture on the raw state is the untested competitor.
-- A variable can be predictive of a scalar target without being dynamically autonomous. (For the three global summaries and the global target, Experiment 2b shows they are both; the caveat stands for any other variable or target.)
+- A variable can be predictive of a scalar target without being dynamically autonomous. (Experiment 2b tests conditional means for selected global observables; it does not establish autonomy of the full macroscopic process.)
 - The useful level depends on the task and the horizon.
 - Some systems admit no useful low-dimensional coarse-grained dynamics.
 - Approximate predictive sufficiency is not causal emergence, which rests on interventionist assumptions that are themselves contested.
@@ -51,7 +51,7 @@ Information bottleneck (Tishby et al.); computational mechanics and causal state
 
 ## What would make us abandon the hypothesis
 
-- Stage 2: the macroscopic variables show large excess future variance across microstates with the same macrostate, no smaller than matched random projections. Then they are coordinates, not a level of description. *Tested for the global target in the sorting simulator: not falsified (excess 8% vs. 73% for the matched random projection). The same test would falsify stage 2 for the local target, and could still falsify it for other distributions, horizons or systems.*
+- Stage 2: the macroscopic variables show large excess future variance across microstates with the same macrostate, no smaller than matched random projections. Then they are coordinates, not a level of description. *Tested for the global target in the sorting simulator: not falsified (excess 8% vs. 73% for the matched random projection). The local-target learning reversal motivates a closure control, but that control has not been run. Other distributions, horizons or systems could still falsify this stage.*
 - Stage 3: no small learner recovers variables of comparable usefulness at any budget, or the discovery cost exceeds the savings.
 - Stage 4: transferred representations do not beat learning from scratch once surface overlap is removed and pre-training cost is charged, or adaptation is never cheaper than relearning.
 

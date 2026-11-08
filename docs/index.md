@@ -1,6 +1,9 @@
 ---
 title: "The Art of Forgetting: From Borges to a Hypothesis About Intelligence"
 description: "A small, fully controlled experiment on when a coarse description predicts better than the complete state, and when it doesn't."
+image:
+  path: /figures/blog_learning_curve.png
+  alt: "Global recovery prediction error falls with more training examples; the supplied summary stays below the full state."
 ---
 
 # The Art of Forgetting: From Borges to a Hypothesis About Intelligence
@@ -53,6 +56,10 @@ For this I built a world where I can control the rules and repeat the same situa
 
 Here disorder has a simple meaning: how far each number is from its correct position, averaged over the array. If every number is home, it is zero. The setup is inspired by the [self-sorting arrays studied by Taining Zhang, Adam Goldstein and Michael Levin](https://doi.org/10.1177/10597123241269740). My simulator is much simpler and is not a replication of their experiments or a model of biological intelligence.
 
+[![A real 64-element sorting trajectory: an ordered array is disturbed, then local stochastic swaps reduce disorder. A close-up shows successful and failed swap attempts; the full state keeps individual values and exchange probabilities, while the supplied summary keeps three global and twenty-four regional numbers.](figures/sorting-experiment.svg)](figures/sorting-experiment.svg)
+
+*One configuration, generated and evolved by the simulator. Each column is a position and its height shows the number there. The shaded interval has less reliable exchanges. The close-up shows the first half of one round; a full round checks both sets of alternating pairs. This is one possible recovery, not an average over futures. Open the diagram for a larger view.*
+
 Because each swap attempt can succeed or fail probabilistically, the same starting state can have different futures. Therefore, even a predictor that knows the exact average remaining disorder after twelve rounds will make errors on individual runs because of this randomness. To estimate this error floor, I kept the initial ordering and swap probabilities fixed for each starting configuration in the test set, then simulated 32 independent futures. This allowed me to estimate how much the remaining disorder varies purely because of randomness. Combining that variation across the test set gives an estimated floor of about 0.19 positions per element, measured as root mean squared error, or RMSE.
 
 I trained the same kind of machine-learning model, gradient-boosted decision trees, on three descriptions of the starting state:
@@ -68,6 +75,8 @@ The second description contains quite a lot of my own knowledge. I already know 
 Each training example pairs one starting configuration and its swap probabilities with the remaining disorder measured after twelve rounds. I repeated the comparison ten times, using a different random seed each time to generate fresh training, validation and test examples. Training budgets ranged from 250 to 5,000 examples. There were three model sizes at every budget and a fourth, larger one at 5,000 examples for the global task. Each description could select its own model size using a separate validation set. The test examples were kept out of that selection. The [methods](methods.md) give the full protocol.
 
 ## 7. What the results show
+
+The short version is that my summary helped this learner predict global recovery, especially with fewer training examples. The full state contains everything needed to compute that summary; the difficulty is learning to use it with the data and model sizes available here. When I changed the question to a local prediction, the full state did better. So this is evidence that a supplied, task-relevant summary can help. It does not show that the learner can discover one for itself.
 
 ![Global-task test RMSE against training examples, with validation-selected model size and 95% confidence intervals across ten seeds](figures/blog_learning_curve.png)
 
@@ -124,6 +133,8 @@ Twelve rounds ahead, the 3 global numbers (orange line) reached a closure index 
 The blue line needs some care. It appears lower than the orange line even though the full state contains all the information needed to compute the summary. Here, the limitation is in the matching procedure: matching on 128 numbers is much harder than matching on 3, and even the nearest available configurations can still be quite different. This lowers the estimated closure of the full state. As I increased the number of configurations, the estimate based on 3 numbers changed little, while estimates based on more numbers were still improving.
 
 What I take from this is that the 3 supplied global numbers capture much of the average recovery behaviour in this system, for the configurations and sorting rounds tested here. This is a test of average futures; it does not show that the summaries capture the full range of possible outcomes.
+
+There are limits to this test. I compared nearby summaries rather than exactly identical ones, and checked only this distribution of configurations and the next twelve rounds. Using one previous round's summary to refine the matches made a small improvement, rather than none. That does not establish that the present summary contains everything useful from the past, which a Markov description would require. The [Experiment 2b results]({{ site.github.repository_url }}/blob/main/results/experiment2b/README.md) give the estimator and the refinement tests. There were no interventions to test causal emergence, and the variables were supplied throughout.
 
 The next question concerns the learner. For discovery, I would like to see whether a small network can build a useful representation from the raw state, without being given my features, and whether learning it costs more than it saves in later predictions. In fact, finding a useful description may itself be much harder than making predictions once we have it. So I would like to understand whether a system can discover that description cheaply enough, or reuse it often enough, for the initial effort to pay off.
 
