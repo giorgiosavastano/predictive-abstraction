@@ -116,25 +116,19 @@ The [Experiment 1 results]({{ site.github.repository_url }}/blob/main/results/ex
 
 ## 8. Does the summary capture something about the system?
 
-There is still a question left from the discussion of emergence. Did I just find convenient inputs for decision trees, or do these collective variables capture regularities in the array's future? To investigate this, I ran a separate test without training a learner.
+There is still a question left from the discussion of emergence. Did I just find convenient inputs for decision trees, or do these collective variables capture something meaningful about how the array evolves?
 
-For each seed, I took 10,000 configurations after two rounds of recovery. I matched arrays with nearly the same summary but different microscopic arrangements, then simulated sixteen independent futures from each configuration. If the summary captures the relevant collective behaviour, arrays that agree on it should have similar average futures, despite their different arrangements.
+To investigate this, I ran a separate experiment without training a learner. I compared thousands of arrays with similar global summaries but different microscopic arrangements, and simulated multiple possible futures for each. The question was simple: if two arrays look similar according to the summary, will they also recover in a similar way?
 
 ![Estimated predictive closure against sorting rounds ahead for four descriptions; the full-state estimate is biased downward by imperfect matching in high dimensions](figures/blog_closure.png)
 
-In this figure, the orange line uses the 3 global numbers, the grey line uses initial disorder alone, the green line uses 3 random combinations, and the blue line uses the full state. Moving to the right means looking further into the future. Higher on the vertical axis means closer agreement between the average futures of configurations matched on each description.
+The results were encouraging. Twelve rounds ahead, the three global numbers reached a closure index of 0.918, where 1 means perfect agreement between the estimated average futures of matched configurations. Initial disorder alone reached 0.572, while three random combinations of the full state reached only 0.266.
 
-To compare them, I used a closure index. A value of 1 means that configurations matched on the description have the same average future. Each configuration's average future is estimated from its sixteen independent runs, and the calculation corrects for the noise in that estimate.
+Interestingly, the full microscopic state scored worse than the three global numbers. But this doesn't mean that compression somehow creates information. Matching configurations on 128 numbers is much harder than matching them on three, so this is a limitation of the matching method.
 
-Twelve rounds ahead, the 3 global numbers (orange line) reached a closure index of 0.918, with a standard deviation of 0.004 across seeds. In this estimate, about 8% of the variance in average remaining disorder is still unexplained by matching on those numbers. The 3 random combinations (green line) reached 0.266, leaving about 73% unexplained. Initial disorder alone (grey line) reached 0.572, leaving about 43% unexplained. The grey line starts close to 1 after one round, but falls as we look further ahead. That is consistent with the idea that where the disorder sits relative to the faults matters for longer-term recovery.
+What I take from this is that the three global numbers seem to capture much of the collective recovery behaviour of the array, at least for the configurations and time horizons tested here.
 
-The blue line needs some care. It appears lower than the orange line even though the full state contains all the information needed to compute the summary. Here, the limitation is in the matching procedure: matching on 128 numbers is much harder than matching on 3, and even the nearest available configurations can still be quite different. This lowers the estimated closure of the full state. As I increased the number of configurations, the estimate based on 3 numbers changed little, while estimates based on more numbers were still improving.
-
-What I take from this is that the 3 supplied global numbers capture much of the average recovery behaviour in this system, for the configurations and sorting rounds tested here. This is a test of average futures; it does not show that the summaries capture the full range of possible outcomes.
-
-There are limits to this test. I compared nearby summaries rather than exactly identical ones, and checked only this distribution of configurations and the next twelve rounds. Using one previous round's summary to refine the matches made a small improvement, rather than none. That does not establish that the present summary contains everything useful from the past, which a Markov description would require. The [Experiment 2b results]({{ site.github.repository_url }}/blob/main/results/experiment2b/README.md) give the estimator and the refinement tests. There were no interventions to test causal emergence, and the variables were supplied throughout.
-
-The next question concerns the learner. I would like to see whether a small network can discover a useful summary from the raw state, without being given my features. Then I would test whether it helps in a sorting system with different rules or array sizes, and whether the learner notices when a new task makes the summary inadequate and revises it. Finding that description may be expensive; it needs to be discovered cheaply enough, or reused often enough, for the initial effort to pay off. These discovery, transfer and adaptation experiments have not been run. So far we have tested only one learner family. The [research vision](research-vision.md), [next experiments](next-experiments.md) and [research note]({{ site.github.repository_url }}/blob/main/docs/manuscript-draft.md) give the proposed tests.
+However, this experiment only compares estimated average futures, not the full range of possible outcomes. It doesn't establish that the macroscopic variables form an autonomous dynamical system or demonstrate causal emergence. The [Experiment 2b results]({{ site.github.repository_url }}/blob/main/results/experiment2b/README.md) explain the method, its limitations, and the additional tests in detail.
 
 ## 9. The art of forgetting
 
@@ -144,7 +138,7 @@ Ted Chiang explores a related problem in *The Truth of Fact, the Truth of Feelin
 
 This is also why I find the physics example useful. We can work with a macroscopic description while keeping access to finer detail when the question requires it. Perhaps part of intelligence involves learning to make that choice, recognizing a useful relationship in a new setting, and revising the description when it fails.
 
-For now, the result is smaller than that hypothesis. In this sorting system, a summary designed with knowledge of the task helped one kind of learner predict global recovery with less data and computation. The same summary worked worse for a local question, and a separate test found that configurations with similar global summaries tended to have similar average futures. Whether a system can discover such descriptions for itself, transfer them and adapt them is what I want to investigate next.
+For now, the result is smaller than that hypothesis. In this sorting system, a summary designed with knowledge of the task helped one kind of learner predict global recovery with less data and computation. The same summary worked worse for a local question, and a separate test found that configurations with similar global summaries tended to have similar average futures. Whether a system can discover such descriptions for itself, transfer them and adapt them is what I want to investigate next. I also want to know whether the effort of discovering a summary can pay for itself in later predictions.
 
 ---
 
