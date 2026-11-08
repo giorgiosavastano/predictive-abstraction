@@ -362,6 +362,17 @@ def exp2b_refinements(summary: pd.DataFrame, path: Path, tau: int, measure: str 
 
 BLOG_RC = {"font.size": 11, "axes.titlesize": 12, "axes.labelsize": 11, "legend.fontsize": 10,
            "lines.linewidth": 2.0, "lines.markersize": 6}
+BLOG_REPRESENTATION_LABELS = {
+    "Full state": "Full state",
+    "Macroscopic": "Summary",
+    "Random projection": "Random combinations",
+    "Initial disorder": "Initial disorder",
+}
+BLOG_FEATURE_SET_LABELS = {
+    "macro": "Global + regional (summary)",
+    "regional": "Regional only (summary − 3 global numbers)",
+    "random": "Random combinations (same size as full summary)",
+}
 
 
 def _direct_label(ax, x, y, text, color, dy=0):
@@ -378,21 +389,22 @@ def blog_learning_curve(selected: pd.DataFrame, floor: pd.DataFrame | None, path
             rows = sub[sub.representation == name].sort_values("budget")
             if rows.empty:
                 continue
-            _band(ax, rows.budget, rows["mean"], rows.ci95_low, rows.ci95_high, COLORS[name], name)
-            _direct_label(ax, rows.budget.iloc[-1], rows["mean"].iloc[-1], name, COLORS[name])
+            label = BLOG_REPRESENTATION_LABELS[name]
+            _band(ax, rows.budget, rows["mean"], rows.ci95_low, rows.ci95_high, COLORS[name], label)
+            _direct_label(ax, rows.budget.iloc[-1], rows["mean"].iloc[-1], label, COLORS[name])
         if floor is not None and not floor.empty:
             f = floor[floor.task == "global"]["irreducible_rmse"].mean()
             ax.axhline(f, color=COLORS["noise floor"], ls="--", lw=1.2)
-            _direct_label(ax, sub.budget.max(), f, "irreducible\nerror", COLORS["noise floor"])
+            _direct_label(ax, sub.budget.max(), f, "Estimated\nerror floor", COLORS["noise floor"], dy=16)
         budgets = sorted(sub.budget.unique())
         ax.set_xscale("log")
         ax.set_xticks(budgets)
         ax.set_xticklabels([f"{b:,}" for b in budgets])
         ax.set_xlim(budgets[0] * 0.9, budgets[-1] * 2.2)
-        ax.set_xlabel("Training episodes")
+        ax.set_xlabel("Training examples")
         ax.set_ylabel("Test error (RMSE, positions per element)")
-        ax.set_title("Predicting remaining disorder: each description with its best model size\n"
-                     "(mean ± 95% CI over 10 seeds)", loc="left")
+        ax.set_title("Predicting remaining disorder\n"
+                     "(model size selected on validation data; mean ± 95% CI over 10 seeds)", loc="left")
         ax.set_ylim(bottom=0)
         save(fig, path)
 
@@ -400,46 +412,50 @@ def blog_learning_curve(selected: pd.DataFrame, floor: pd.DataFrame | None, path
 def blog_task_reversal(selected: pd.DataFrame, floor: pd.DataFrame | None, path: Path) -> None:
     """Two panels: the global task (macro wins) and the local task (full state wins)."""
     with plt.rc_context(BLOG_RC):
-        fig, axes = plt.subplots(1, 2, figsize=(10, 4.4))
-        titles = {"global": "Global question: remaining disorder after 12 sweeps",
-                  "local": "Local question: which value sits in the centre after 1 sweep"}
+        fig, axes = plt.subplots(1, 2, figsize=(10, 4.8))
+        fig.subplots_adjust(top=0.8, wspace=0.32)
+        titles = {"global": "Global question:\nremaining disorder after 12 rounds",
+                  "local": "Local question:\ncentral value after 1 round"}
         for ax, task in zip(axes, ("global", "local")):
             sub = selected[(selected.task == task) & (selected.metric == "test_rmse")]
             for name in ("Full state", "Macroscopic", "Initial disorder"):
                 rows = sub[sub.representation == name].sort_values("budget")
                 if rows.empty:
                     continue
-                _band(ax, rows.budget, rows["mean"], rows.ci95_low, rows.ci95_high, COLORS[name], name)
+                _band(ax, rows.budget, rows["mean"], rows.ci95_low, rows.ci95_high, COLORS[name],
+                      BLOG_REPRESENTATION_LABELS[name])
             if floor is not None and not floor.empty:
                 ax.axhline(floor[floor.task == task]["irreducible_rmse"].mean(), color=COLORS["noise floor"],
-                           ls="--", lw=1.2, label="irreducible error")
+                           ls="--", lw=1.2, label="Estimated error floor")
             budgets = sorted(sub.budget.unique())
             ax.set_xscale("log")
             ax.set_xticks(budgets)
             ax.set_xticklabels([f"{b:,}" for b in budgets])
-            ax.set_xlabel("Training episodes")
+            ax.set_xlabel("Training examples")
             ax.set_title(titles[task], loc="left", fontsize=11)
             ax.set_ylim(bottom=0)
-        axes[0].set_ylabel("Test error (RMSE, positions)")
+        axes[0].set_ylabel("Test error (RMSE, positions per element)")
         axes[1].set_ylabel("Test error (RMSE, element values)")
         handles, labels = axes[0].get_legend_handles_labels()
         fig.legend(handles, labels, frameon=False, loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.06))
-        fig.suptitle("The same summary helps one question and hurts another (best model size per description)",
+        fig.suptitle("The same summary on two different prediction questions\n"
+                     "(model size selected on validation data; mean ± 95% CI over seeds)",
                      y=1.02, fontsize=12)
         save(fig, path)
 
 
 def blog_granularity(summary: pd.DataFrame, path: Path, budget: int, capacity: str) -> None:
-    """Error vs number of regions at one budget, with global-only and raw references."""
+    """Error vs regions, with a second axis showing full-summary input counts."""
     with plt.rc_context(BLOG_RC):
         sub = summary[(summary.task == "global") & (summary.capacity == capacity) & (summary.budget == budget)
                       & (summary.metric == "test_rmse")]
-        fig, ax = plt.subplots(figsize=(7.2, 4.6))
+        fig, ax = plt.subplots(figsize=(8.4, 5.6))
         for fs in ("random", "regional", "macro"):
             rows = sub[(sub.feature_set == fs) & (sub.edge_assignment.isin(["left", "none"]))].sort_values("bins")
             if rows.empty:
                 continue
-            _band(ax, rows.bins, rows["mean"], rows.ci95_low, rows.ci95_high, COLORS[fs], FEATURE_SET_LABELS[fs])
+            _band(ax, rows.bins, rows["mean"], rows.ci95_low, rows.ci95_high, COLORS[fs],
+                  BLOG_FEATURE_SET_LABELS[fs])
         for fs, text in (("raw", "Full state, 128 numbers (reference)"), ("global", "3 global numbers only (reference)")):
             rows = sub[sub.feature_set == fs]
             if rows.empty:
@@ -449,11 +465,22 @@ def blog_granularity(summary: pd.DataFrame, path: Path, budget: int, capacity: s
         ax.set_xscale("log", base=2)
         ax.set_xticks(bins)
         ax.set_xticklabels([str(b) for b in bins])
-        ax.legend(frameon=False, loc="upper right")
+        counts_ax = ax.secondary_xaxis(
+            "top", functions=(lambda regions: 3 + 3 * regions, lambda counts: (counts - 3) / 3))
+        counts = [3 + 3 * b for b in bins]
+        counts_ax.set_xticks(counts)
+        counts_ax.set_xticklabels([str(count) for count in counts])
+        counts_ax.set_xlabel("Input numbers per example (full summary and random combinations)", labelpad=8)
+        counts_ax.tick_params(axis="x", labelsize=10)
+        counts_ax.spines["top"].set_visible(True)
+        counts_ax.spines["top"].set_color("#b7b7b2")
+        counts_ax.grid(False)
+        ax.legend(frameon=False, loc="upper right", fontsize=9.5, labelspacing=0.7)
         ax.set_xlabel("Number of regions the array is divided into")
         ax.set_ylabel("Test error (RMSE, positions per element)")
-        ax.set_title(f"How much detail to keep? ({budget:,} training episodes, {capacity} model; mean ± 95% CI over seeds)",
-                     loc="left", fontsize=11)
+        ax.set_title("How much detail to keep?\n"
+                     f"({budget:,} training examples; {capacity} model; mean ± 95% CI over seeds)",
+                     loc="left", fontsize=11, pad=54)
         ax.set_ylim(bottom=0)
         save(fig, path)
 
@@ -463,8 +490,9 @@ def blog_closure(summary: pd.DataFrame, path: Path) -> None:
     with plt.rc_context(BLOG_RC):
         sub = summary[(summary.measure == "target") & (summary.n_used == summary.n_used.max())
                       & (summary.refined_by == "none")]
-        labels = {"global": "3 whole-array numbers", "initial_disorder": "disorder alone (1 number)",
-                  "random-3": "random squeeze (3 numbers)", "raw": "everything (128 numbers, lower bound)"}
+        labels = {"global": "3 global numbers (summary)", "initial_disorder": "Initial disorder (1 number)",
+                  "random-3": "Random combinations (3 numbers)",
+                  "raw": "Full state (128 numbers;\nlower-bound estimate)"}
         fig, ax = plt.subplots(figsize=(7.2, 4.6))
         for name in ("global", "initial_disorder", "raw", "random-3"):
             rows = sub[sub.representation == name].sort_values("tau")
@@ -477,8 +505,9 @@ def blog_closure(summary: pd.DataFrame, path: Path) -> None:
         ax.set_ylim(0, 1.02)
         ax.set_xticks(range(1, 13))
         ax.set_xlabel("Rounds of sorting ahead")
-        ax.set_ylabel("Share of the predictable future fixed by the description")
-        ax.set_title("Arrays that agree on the description: how much do their futures agree?\n(mean ± 95% CI over 10 seeds)",
+        ax.set_ylabel("Closure index (1 = agreement of average futures)")
+        ax.set_title("Similar descriptions: how similar are the average futures?\n"
+                     "(mean ± 95% CI over 10 seeds)",
                      loc="left")
         save(fig, path)
 
