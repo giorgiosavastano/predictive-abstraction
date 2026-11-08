@@ -1,6 +1,6 @@
 # Editorial review
 
-Reviewed and updated 8 November 2026. This report accompanies [the published essay](index.md). The first pass copied the complete [personal draft](index_draft.md) verbatim into the published file. Following your approval, the opening now includes spelling and grammar repairs, small improvements to flow, the agreed scientific clarifications and your revised library explanation. The original draft remains unchanged. Section B records the original issues and their resolutions, including the follow-up review of your figure explanations; no correction there is awaiting approval.
+Reviewed and updated 8 November 2026. This report accompanies [the published essay](index.md). The first pass copied the complete [personal draft](index_draft.md) verbatim into the published file. Following your approval, the opening now includes spelling and grammar repairs, small improvements to flow, the agreed scientific clarifications and your revised library explanation. The original draft remains unchanged. Section B records the original issues and their resolutions, including the follow-up review of your figure explanations. The three suggestions in B11 have now been applied using your approved wording, including the validation-selected comparison of 3.39 versus 4.76.
 
 ## A. Writing style analysis
 
@@ -23,7 +23,7 @@ The 8 November revisions make your approach to figures more specific:
 
 ## B. Issues requiring my attention
 
-The quotations below retain the original draft's wording as an audit record. All corrections have now been applied in `index.md`, incorporating your decisions on the library and the video reference. The 1942/1941 publication sequence and the broad readings of Borges's stories are consistent with the cited works. Their implications for intelligence remain interpretations, not experimental evidence. Section 4 needed no correction in the initial pass. Your subsequent revisions to the first four sections are retained; the 8 November figure-editing pass leaves that opening unchanged.
+The quotations below retain the original draft's wording as an audit record. The corrections in B1–B10 have been applied in `index.md`, incorporating your decisions on the library and the video reference. The 1942/1941 publication sequence and the broad readings of Borges's stories are consistent with the cited works. Their implications for intelligence remain interpretations, not experimental evidence. Section 4 needed no correction in the initial pass. Your subsequent revisions to the first four sections are retained; both the figure-editing pass and the latest-version review leave that opening unchanged. B11 records the latest clarifications, now applied following your approval.
 
 ### 1. The library's completeness can include multiple volumes
 
@@ -133,6 +133,14 @@ These issues arose in the 8 November working version, rather than the original p
 
 Proofreading also corrected “expecially”, “traning”, “devided”, “thenresults”, “immediatly” and “reagions”, repaired the incomplete sentence introducing the second experiment, and removed the repeated “also” in the regional-feature definition. The phrases “What I take from this”, “Interestingly” and your direct explanations of the coloured lines remain.
 
+### 11. Latest-version review: approved clarifications
+
+No new essential factual correction or substantial grammatical error was found. The new discovery paragraph makes the distinction between finding a description and benefiting from it concrete: “reuse it often enough, for the initial effort to pay off” connects naturally to the earlier timing comparison. It poses a research question without claiming a complexity result or an autonomous discovery result.
+
+- **Section and quotation:** §7, “a perfect predictor with unlimited training examples … could compute the summary itself, so the summary cannot contain extra information about the system”. **Type:** Conceptual clarification. **Why:** The conclusion follows because the supplied summary is a deterministic function of the full state. It does not require a perfect predictor or unlimited examples. Computing a specified summary and discovering a useful one are separate questions; the following sentences already make the latter uncertainty clear. **Applied correction:** “Since I compute the summary from the full state, it cannot contain extra information about the target.” **Source:** [Methods §1](methods.md#1-hypothesis-and-estimand); [feature extraction](../src/macro_prediction/features.py). **Severity/status:** Recommended clarification; applied as approved.
+- **Section and quotation:** §7, “at 5,000 examples with the medium model, its error was 3.41 against 4.76”. **Type:** Consistency between figure and numerical example. **Why:** Those medium-model values are correct. Figure 3 instead selects each description's model size on validation data; at 5,000 examples its corresponding means are 3.39 and 4.76. Readers may assume the nearby numbers describe the plotted points. **Applied correction:** “For example, at 5,000 examples with validation-selected model sizes, its error was 3.39 against 4.76.” The later 4.15 remains a separate medium-model resolution-sweep result. **Sources:** [Fixed-model summary](../results/experiment1/summary/exp1_summary.csv), [validation-selected summary](../results/experiment1/summary/exp1_validation_selected_summary.csv), filtered to the local task, 5,000 examples and test RMSE; [resolution-sweep tables](../results/experiment2/summary/tables.md). **Severity/status:** Recommended clarification; applied as approved. This changes which saved comparison the prose quotes; no saved result was modified.
+- **Section and quotation:** §8, “the 3 supplied global numbers capture much of the average recovery behaviour … for the configurations and sorting rounds tested here”. **Type:** Optional explanation of scope. **Why:** This conclusion remains appropriately limited. Your shorter version removes the explicit distinction between agreement in average futures and agreement in all possible outcomes. A single sentence retains that distinction without restoring the longer history/refinement discussion. **Applied addition:** “This is a test of average futures; it does not show that the summaries capture the full range of possible outcomes.” **Sources:** [Methods §7b](methods.md#7b-experiment-2b-protocol-experiment2bpy), which defines a conditional-mean comparison; [Experiment 2b results]({{ site.github.repository_url }}/blob/main/results/experiment2b/README.md). **Severity/status:** Optional suggestion; applied as approved.
+
 ## C. Changes made to the published article
 
 ### Integration and structure
@@ -151,6 +159,14 @@ Proofreading also corrected “expecially”, “traning”, “devided”, “t
 - Added a top axis to the second figure: input numbers per example for the full summary and random combinations, mapped by 3 + 3 × regions. It displays 6, 9, 15, 27, 51, 99 and 195. The regional-only series always uses three fewer; the text gives the eight-region example of 27 versus 24 numbers. The training set remains fixed at 5,000 examples, so this axis does not describe the number of training examples or the total dataset size.
 - Changed only the blog plotting functions and their display-label mappings in `src/macro_prediction/plots.py`. Internal representation identifiers, experiment runners, feature extraction, analysis calculations and paper-figure functions remain unchanged. Regenerated the four blog figures as both PNG and PDF from the existing saved summaries; did not rerun an experiment or rewrite results.
 - Compared the old and new plotting functions on the same correctly filtered tables: every plotted curve and confidence-band coordinate is identical. Checked the top-axis counts against the saved feature counts, verified closure uses only `closure_index` rows, checked title/axis-label placement and inspected all four rendered PNGs. The plotting environment was installed separately under `/tmp`; project dependencies and lockfile were left unchanged.
+
+### Latest-version review
+
+- Kept your shorter closure conclusion and the added explanation of discovering a description cheaply enough, or reusing it enough, to repay the initial effort. Did not restore the removed history/refinement discussion.
+- Clarified the meaning of the ten random seeds in §6: each repetition generates fresh training, validation and test examples. The training budgets and experimental protocol are unchanged. No other article wording was edited in this pass; no new spelling or grammar repairs were needed.
+- Rechecked the quoted global and local comparisons against the saved summaries. Recorded the two precision points and the optional scope sentence in B11, leaving their wording and all reported numbers unchanged.
+- Following your approval, applied all three B11 changes verbatim: replaced the information sentence, aligned the local-task example with the validation-selected figure (3.39 versus 4.76), and added the average-futures qualification. The other article text remains as reviewed.
+- This pass changes only the article and this report. The first four sections, original draft, Jekyll front matter, figures, plotting code, results, manuscript and research documentation are unchanged from the start of this review. All four figure paths remain intact.
 
 ### Scientific corrections and qualifications in the continuation
 
@@ -189,6 +205,6 @@ Both reproduction notes refer readers to the README; the later note distinguishe
 
 ## D. Remaining editorial suggestions
 
-No decision remains outstanding on the corrections in B. The original draft stays untouched as your reference.
+The three suggestions in B11 have now been applied as requested. No decision remains outstanding on these corrections. The original draft stays untouched as your reference.
 
-A separate research-document review could reconcile the manuscript's older “do not measure closure” statements with Experiment 2b and revisit its stronger Markov/full-distribution interpretation. That remains outside this article-editing task; the manuscript and research documentation are unchanged. The current follow-up changes the blog plotting code and exports, while preserving all experimental data and simulation/learning code. The collective-behaviour examples and philosophical reading note remain part of the essay's existing framing.
+A separate research-document review could reconcile the manuscript's older “do not measure closure” statements with Experiment 2b and revisit its stronger Markov/full-distribution interpretation. That remains outside this article-editing task; the manuscript and research documentation are unchanged. The earlier figure follow-up changed the blog plotting code and exports, while preserving all experimental data and simulation/learning code; the latest-version review makes no further figure changes. The collective-behaviour examples and philosophical reading note remain part of the essay's existing framing.
