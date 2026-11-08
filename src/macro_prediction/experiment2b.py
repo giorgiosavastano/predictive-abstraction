@@ -7,9 +7,11 @@ representation have the same macroscopic future? Formally, for a candidate
 abstraction ``Z = phi(X)`` and horizon ``tau``, how close is
 ``P(Z_{t+tau} | X_t)`` to ``P(Z_{t+tau} | Z_t)``? If the sorting dynamics
 approximately close over ``phi``, then the microscopic details left out of
-``Z_t`` add little information about the future macrostate; if ``phi`` is
-merely a convenient set of coordinates for a learner, they add a lot. No
-learner is involved in this test.
+``Z_t`` add little information about the future macrostate. The estimator
+below tests only a weaker implication: agreement of conditional means for
+selected future observables, rather than full future distributions. No
+learner is involved in this diagnostic; it does not establish a Markov law
+or causal emergence.
 
 Estimator
 ---------
@@ -25,9 +27,9 @@ realisation mean and ``s2_i(tau)`` the realisation variance. Then
   ``excess_phi(tau) = mean_{i, j in N_k(i)} (mu_i - mu_j)^2 / 2 - V_irr / R``,
   which estimates ``E_Z[ Var( E[future | X] | Z ) ]``: the variance in the
   true conditional mean that remains once the macrostate is fixed.
-* ``closure_phi(tau) = 1 - excess_phi / V_total``: 1 means the macrostate
-  determines the future as well as the microstate does; 0 means it carries no
-  information about which configurations share a future.
+* ``closure_phi(tau) = 1 - excess_phi / V_total``: 1 means no residual
+  disagreement in conditional means in this diagnostic; 0 means matched
+  configurations disagree as much as the overall conditional-mean variance.
 
 Neighbour matching replaces exact "same macrostate" cells, which do not exist
 for continuous features. It is biased against high-dimensional ``phi``
@@ -37,8 +39,9 @@ comparisons are between representations of matched size (global vs. random-3,
 macro-8 vs. random-27, ...). Two refinements test whether more detail helps:
 ``+raw`` re-ranks the ``k0`` nearest macro neighbours by raw-state distance
 (does microscopic detail beyond the macrostate matter?), and ``+history``
-re-ranks them by the previous sweep's global summaries (is the coarse-grained
-dynamics non-Markov in the instantaneous macrostate?).
+re-ranks them by the previous sweep's global summaries (does one-step history
+improve conditional-mean agreement beyond the present-state controls?). This
+limited refinement is not a complete test of the Markov property.
 
 The "present" configuration is the state after ``present_sweeps`` sweeps of
 an episode drawn from the usual episode distribution, so that a one-sweep

@@ -2,9 +2,11 @@ cff-version: 1.2.0
 message: "If you use this experimental software, please cite the repository and its version."
 title: "Predictive Abstraction: Task-Relevant Coarse-Graining in a Local-Sorting System"
 version: 0.1.0
-date-released: 2026-11-06
 authors:
   - family-names: "Savastano"
     given-names: "Giorgio"
 repository-code: "https://github.com/giorgiosavastano/predictive-abstraction"
+url: "https://giorgiosavastano.github.io/predictive-abstraction/"
+type: software
+abstract: "Reproducible local-sorting experiments comparing supplied task-relevant summaries with full-state and random-projection representations under finite training budgets, plus an observational conditional-mean closure diagnostic."
 license: MIT

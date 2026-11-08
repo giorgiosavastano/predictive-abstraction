@@ -1,6 +1,6 @@
 # LaTeX working paper
 
-`main.tex`, `references.bib` and `figures/*.png` form a self-contained manuscript source directory. The figures are copies of `results/experiment1/figures/*.png` and `results/experiment2/figures/*.png` (written by `uv run macro-analyze`) plus the original single-seed `learning_curves.png`.
+`main.tex`, `references.bib` and `figures/*.png` form a self-contained manuscript source directory. The figures are copies of `results/experiment1/figures/*.png`, `results/experiment2/figures/*.png` and `results/experiment2b/figures/*.png` (written by `uv run macro-analyze`) plus the original single-seed `learning_curves.png`.
 
 To compile with a standard TeX installation:
 

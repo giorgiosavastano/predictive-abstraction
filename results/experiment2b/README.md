@@ -4,7 +4,7 @@ All numbers are copied from `summary/tables.md` and `summary/*.csv`, regenerated
 
 ## 1. Hypothesis
 
-Experiments 1–2 showed that a few collective variables are *useful to a learner*. The emergence hypothesis makes a stronger claim about the *system*: the sorting dynamics approximately close over those variables, so that microscopic configurations with the same macrostate have the same macroscopic future, P(Z_{t+τ} | X_t) ≈ P(Z_{t+τ} | Z_t). The alternative is that the variables are convenient coordinates for a tree ensemble while the future still depends substantially on microscopic detail. The two predictions differ in a learner-free quantity: the variance of the true conditional mean of the future that remains once the macrostate is fixed.
+Experiments 1–2 showed that a few supplied collective variables are *useful to a learner*. Here we ask a narrower system-level question: do configurations with similar summaries have similar average futures, without fitting a predictor? Full observational predictive sufficiency would require agreement of entire future distributions, P(Z_{t+τ} | X_t) ≈ P(Z_{t+τ} | Z_t). The present diagnostic tests only conditional means of the measured observables. We call high agreement “approximate conditional-mean closure”; it does not establish full distributional sufficiency, a closed macroscopic transition law, Markovian dynamics or causal emergence.
 
 ## 2. Setup
 
@@ -35,9 +35,9 @@ Closure index and excess variance per abstraction, horizon, measure and sample s
 
 Paired differences at τ = 12: global − random-3 = +0.652 [0.614, 0.689]; macro-8 − random-27 = +0.246 [0.230, 0.262]; global − initial disorder = +0.347 [0.339, 0.354]; global − raw = +0.212; all 10/10 seeds. With the future measured as the three global summaries, global closure is 0.929 and initial disorder 0.545.
 
-**Horizon dependence.** Global closure falls slowly from 0.995 at τ = 1 to 0.918 at τ = 12. The initial-disorder scalar is almost perfectly closed at τ = 1 (0.997) and collapses to 0.572 by τ = 12: how much disorder there is predicts the next sweep, but how much remains after twelve sweeps depends on where the disorder sits relative to the unreliable region, which only the interaction feature carries.
+**Horizon dependence.** Global closure falls slowly from 0.995 at τ = 1 to 0.918 at τ = 12. The initial-disorder scalar gives high conditional-mean agreement at τ = 1 (0.997), falling to 0.572 by τ = 12. This is consistent with a role for the location of disorder relative to unreliable exchanges; the matching test does not identify a unique necessary feature or a causal mechanism.
 
-**Convergence.** Low-dimensional matchings have converged (global 0.912 → 0.916 → 0.918 at 2,500 → 5,000 → 10,000 configurations); high-dimensional ones have not (macro-8 0.857 → 0.881 → 0.899; raw 0.622 → 0.666 → 0.706). The plain estimator is therefore a lower bound on closure for high-dimensional φ, and the ordering macro-8 < global, although macro-8 contains strictly more information, is a finite-sample matching artefact, not a property of the system. Fair comparisons are at matched size.
+**Convergence.** The global estimate changes less with sample size (0.912 → 0.916 → 0.918 at 2,500 → 5,000 → 10,000 configurations) than the higher-dimensional estimates (macro-8 0.857 → 0.881 → 0.899; raw 0.622 → 0.666 → 0.706). This is evidence of downward matching bias at higher dimensions, not a proof of convergence at low dimensions or a rigorous lower bound. Macro-8 contains the global summaries, so its lower estimated score is consistent with imperfect matching rather than an information loss. Matched-size controls reduce the dimensional confound but do not remove differences in geometry.
 
 **Does microscopic detail add to the macrostate?** Matching on the three global summaries and then re-ranking the 50 candidates by raw-state distance raises closure by **+0.0103 [0.0094, 0.0112]** over the random re-rank control (10/10 seeds). Re-ranking by the previous sweep's global summaries raises it by only +0.0015 [0.0005, 0.0025]. At the macro-8 level, re-ranking by the *present* global summaries (+0.081) does as much as re-ranking by *history* (+0.072), and history is slightly worse than present-global (−0.009 [−0.009, −0.008]).
 
@@ -45,20 +45,20 @@ Paired differences at τ = 12: global − random-3 = +0.652 [0.614, 0.689]; macr
 
 ## 5. Uncertainty
 
-Across-seed SDs are 0.001–0.004 for every engineered abstraction and up to 0.06 for the 3-dimensional random projection. All paired differences reported above have intervals excluding zero and the same sign in every seed. The dominant uncertainty is not statistical but estimator bias: nearest-neighbour matching understates closure in high dimensions, by an amount the convergence table bounds from below.
+Across-seed SDs are 0.001–0.004 for every engineered abstraction and up to 0.06 for the 3-dimensional random projection. The paired differences reported above have intervals excluding zero and the same sign in every seed. Those intervals describe variation across seeds, not uncertainty from the matching approximation. The convergence checks indicate substantial estimator bias in higher dimensions; they do not bound that bias rigorously.
 
 ## 6. Interpretation
 
-- **The three global summaries are an approximately autonomous level of description for this target.** Configurations that agree on three numbers, matched almost exactly (relative neighbour distance 0.04), have futures twelve sweeps ahead whose true conditional means agree to within 8% of their total variance. This is a statement about the system, not about any learner.
-- **The closure is not trivial sortedness.** The one-number disorder scalar closes at short horizons and fails at long ones; a random 3-dimensional projection closes at 27%. What closes is the specific combination of disorder, inversions and disorder-on-faults.
-- **Microscopic detail adds a little, and the macrostate is approximately Markov.** Of the 8% of predictable variance not fixed by the three numbers, nearest raw-state neighbours recover about 1 point; the previous macrostate recovers essentially nothing. Because raw neighbours among 50 candidates are still far apart in 128 dimensions, the 1 point is a lower bound on what the microstate carries, and the 8% is an upper bound on it.
-- **This answers the question Experiments 1–2 could not.** The usefulness of the supplied features is not only a coincidence between coordinates and a tree ensemble's inductive bias: the dynamics of this system, at this horizon and over this distribution of configurations, are largely captured by the three global variables. That is the premise of stage 2 of the research programme, and it holds here.
-- **What it does not show.** No causal emergence (no interventions); no ontological claim; nothing about discovery (the variables were supplied); nothing beyond this simulator, this episode distribution, horizons ≤ 12 and the global target. The local target is not closed over any coarse representation (Experiments 1–2), and no test here changes that.
+- **Evidence for approximate conditional-mean closure.** The three supplied global summaries give a high score for the measured average recovery, over the sampled distribution and horizons. A score of 0.918 leaves about 8% of the noise-corrected conditional-mean variance as residual disagreement in this estimator. It does not mean that individual futures or full future distributions agree to 92% accuracy.
+- **Content matters.** The disorder scalar and matched-size random projection give lower scores at twelve sweeps. This supports the usefulness of the supplied combination, without identifying a unique sufficient representation.
+- **Some refinement information remains.** Raw-state re-ranking improves closure by 0.0103 and one-step-history re-ranking by 0.0015 relative to random re-ranking. The history improvement is small but nonzero. Neither refinement measures all the information in the omitted variables; imperfect matching remains. These results do not establish a Markov property.
+- **Separate evidence about the system and the learner.** The average-future regularity is observed without fitting a learner. It complements the learning results, but does not exclude a contribution from the tree learner’s inductive bias or prove a general autonomous macroscopic law.
+- **Scope.** No interventions or autonomous representation learning were performed. The local task in Experiments 1–2 tests learning performance; local-target closure has not been measured.
 
 ## 7. Limitations
 
-- Nearest-neighbour matching, not exact macrostate cells: converged for ≤ 6 dimensions, biased downward above; a learner-free estimator that is unbiased in 128 dimensions does not exist at this sample size.
-- Configurations are the episode distribution advanced by two sweeps; closure over a different distribution (for example, after many sweeps, or the shifted fault distribution) was not measured.
-- The future is measured by the global summaries and the target; closure of a different macroscopic observable may differ.
-- Realisation noise is corrected under the assumption of independent realisations, which holds by construction, and V_irr is small (3% of V_total at τ = 12), so noise correction is not the limiting factor.
-- The history test uses one previous sweep of three global summaries; longer or richer histories were not tested.
+- Nearest-neighbour matching approximates equal-summary cells. The sample-size checks suggest relatively stable low-dimensional estimates and downward bias in higher dimensions; they provide no rigorous estimator bounds.
+- Configurations are sampled after two recovery sweeps; other configuration distributions were not tested. Horizons are one to twelve further sweeps.
+- The future is measured by average displacement and the three standardized global summaries. Agreement of those conditional means does not imply agreement of future distributions or complete trajectories.
+- Noise correction assumes independent realisations, generated with independent draws by construction. V_irr is about 3% of V_total at τ = 12; finite-realisation and matching error remain.
+- Only one previous sweep’s three global summaries were used to refine matches. Longer and richer histories, and full conditional distributions, would be needed to investigate a Markov description more fully.
