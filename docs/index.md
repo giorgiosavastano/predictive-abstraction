@@ -138,7 +138,7 @@ Ted Chiang explores a related problem in *The Truth of Fact, the Truth of Feelin
 
 This is also why I find the physics example useful. We can work with a macroscopic description while keeping access to finer detail when the question requires it. Perhaps part of intelligence involves learning to make that choice, recognizing a useful relationship in a new setting, and revising the description when it fails.
 
-For now, the result is smaller than that hypothesis. In this sorting system, a summary designed with knowledge of the task helped one kind of learner predict global recovery with less data and computation. The same summary worked worse for a local question, and a separate test found that configurations with similar global summaries tended to have similar average futures. Whether a system can discover such descriptions for itself, transfer them and adapt them is what I want to investigate next.
+For now, the result is smaller than that hypothesis. In this sorting system, a summary designed with knowledge of the task helped one kind of learner predict global recovery with less data and computation. The same summary worked worse for a local question, and a separate test found that configurations with similar global summaries tended to have similar average futures. Whether a system can discover such descriptions for itself, transfer them and adapt them is what I want to investigate next. I also want to know whether the effort of discovering a summary can pay for itself in later predictions.
 
 ---
 
