@@ -12,9 +12,9 @@ image:
 
 When data and time are limited, can a machine learn to predict a system better from a useful set of abstractions than from every available detail?
 
-As humans, somethime we can remember every word of a conversation and still miss its point. That gap between having information and understanding is what fashinate me here, especially when we talk about intelligence in machines.
+As humans, sometimes we can remember every word of a conversation and still miss its point. That gap between having information and understanding is what fascinates me here, especially when we talk about intelligence in machines.
 
-Let me take you on a short journey through some ideas borrowed from literature, philosophy and physics, down to a small hypothesis we can actually test: 
+Let me take you on a short journey through some ideas borrowed from literature, philosophy and physics, down to a small hypothesis we can actually test. 
 
 *6 November 2026. Code, raw results and the research note are in [the repository]({{ site.github.repository_url }}). The README explains how to reproduce the experiments and figures; a one-minute demo is also available there.*
 
