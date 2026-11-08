@@ -42,13 +42,13 @@ Put the three stories together and a working hypothesis suggests itself. Perhaps
 
 To investigate this idea, we need to distinguish between finding a useful set of abstractions and using them. Here, I start with the second question: can a model learn from a useful set of abstractions without having to find them for itself?
 
-The [information bottleneck method](https://arxiv.org/abs/physics/0004057) gives a precise way of thinking about one part of the problem: keep a compact description of an input while preserving information about a target. For example, if I want to predict how quickly a gas expands, the useful information will be different from what I need to follow one particular molecule.
-
 There is another question behind the physics example. Some useful descriptions reflect collective behaviour produced by the system itself. This is the sense of emergence that interests me here. Pressure comes from many molecules interacting; it is not a property of one molecule. Therefore, some emergent properties of the system may be useful things to capture in an abstraction. However, as we will see, it always depends on the questions we are asking about the system.
 
 I find related motivation in Michael Levin's work on development and regeneration, where he [discusses goal-directed behaviour in groups of cells](https://doi.org/10.3389/fnsys.2022.768201), and in [Cavagna, Parisi and colleagues' measurements of starling flocks](https://doi.org/10.1073/pnas.1005766107), where correlations in the birds' velocities extend over distances that grow with the flock. These are different kinds of evidence about collective behaviour. I am borrowing a question from them: when does looking at the group reveal something useful that is difficult to see by looking at its parts separately?
 
-The connection to intelligence remains a hypothesis. [François Chollet](https://arxiv.org/abs/1911.01547) proposes thinking of intelligence in terms of how efficiently a system acquires new skills, taking account of its prior knowledge and experience. Finding a useful abstraction could be one mechanism behind that efficiency. Before testing whether a system can discover, reuse or adapt an abstraction, I wanted to start with a simpler question: if I supply a good abstraction, how much does it help?
+Before testing whether a system can discover, reuse or adapt an abstraction, I wanted to start with a simpler question: if I supply a good abstraction, how much does it help?
+
+The experiments led to three observations. A summary I designed helped the model predict the overall recovery of the system using less data and computation. But the full state became more useful when I asked a different, local question. And a separate test suggested that a few global variables captured much of the system's average recovery behaviour.
 
 ## 6. A small experiment
 
@@ -76,8 +76,6 @@ Each training example pairs one starting configuration and its swap probabilitie
 
 ## 7. What the results show
 
-The short version is that my summary helped this learner predict global recovery, especially with fewer training examples. The full state contains everything needed to compute that summary; the difficulty is learning to use it with the data and model sizes available here. When I changed the question to a local prediction, the full state did better. So this is evidence that a supplied, task-relevant summary can help. It does not show that the learner can discover one for itself.
-
 ![Global-task test RMSE against training examples, with validation-selected model size and 95% confidence intervals across ten seeds](figures/blog_learning_curve.png)
 
 In this figure, the orange line represents a predictor trained on the summary, and the blue line one trained on the full state. The green line uses random combinations, while the yellow line uses initial disorder alone. Moving to the right gives each predictor more training examples.
@@ -90,19 +88,19 @@ There was also an important practical difference in computing time. At 5,000 exa
 
 The random combinations did worse than both the summary and the full state at every tested budget and model size in this experiment, on average. At 250 examples, they were even worse than using initial disorder alone. Simply reducing the number of inputs did not reproduce the benefit. Adding the full state to the designed summary did not improve the average error either.
 
-In the next experiment, I changed the number of regions used to divide the array. In the original experiment I used 8; here I varied the number of regions from 1 to 64, using the same configurations for each comparison.
+Next, I varied the number of regions from 1 to 64, using the same configurations for each comparison.
 
 ![Global-task RMSE against regions, with an upper axis showing input numbers per example for the full summary and random combinations; 5,000 training examples and medium model size](figures/blog_granularity.png)
 
-In this figure we see the results from a medium predictor model trained on 5,000 examples. Each line represents predictors trained on a different description of the same configurations: the orange line uses the full summary (3 global numbers + 3 numbers per region), the purple line uses only the regional numbers (3 numbers per region), and the green line uses random combinations of the full state, with the same number of inputs as the full summary. The horizontal blue and yellow lines represent the full state (128 numbers) and the 3 global numbers alone.
+Here I kept the model size fixed and trained on 5,000 examples. Each line uses a different description of the same configurations: the orange line uses the full summary (3 global numbers + 3 numbers per region), the purple line uses only the regional numbers (3 numbers per region), and the green line uses random combinations of the full state, with the same number of inputs as the full summary. The horizontal blue and yellow lines represent the full state (128 numbers) and the 3 global numbers alone.
 
-The upper axis shows how many input numbers each example contains for the full summary and the random combinations. With 8 regions, that means 27 numbers; the regional-only summary has 24 because it drops the 3 global numbers. The number of training examples stays fixed at 5,000.
+The upper axis counts input numbers per example for the orange and green lines. With 8 regions, that means 27 numbers; the purple line uses 24.
 
-One thing that is immediately clear is that most of the benefit was already present in the three global numbers. A predictor with access only to these 3 numbers (yellow horizontal line) already reached 0.405.
+One thing that is immediately clear is that most of the benefit was already present in the three global numbers. A predictor with access only to these 3 numbers (yellow horizontal line) already reached 0.405. Adding regional detail helped, but the full summary's error changed relatively little across resolutions.
 
-Interestingly, when I removed the global numbers and kept only regional statistics (purple line), four to eight regions did much better than sixty-four. The regional summary reaches its minimum at 8 regions, where it predicts better than the 3 global numbers alone. But as we increase the number of regions further, the error actually increases. There seems to be a trade-off between losing useful detail and giving the learner too many quantities to fit.
+Interestingly, when I kept only regional statistics (purple line), four to eight regions did much better than sixty-four. There seems to be a trade-off between losing useful detail and giving the learner too many quantities to fit.
 
-For the full summary (orange), eight regions also gave the lowest average error, 0.366, with 5,000 examples and the medium model. Two through sixty-four regions were all within about 6% of that value. With only 250 examples, the differences were small, around 0.45–0.47, and a single region was often selected on validation data. More training examples and larger models generally moved the preferred resolution towards finer regions.
+The [research note]({{ site.github.repository_url }}/blob/main/docs/manuscript-draft.md#82-experiment-2) gives the detailed comparisons across training budgets and model sizes.
 
 Then I changed the objective of the predictor: it now has to predict which number will be at the centre after one round of sorting.
 
@@ -136,11 +134,7 @@ What I take from this is that the 3 supplied global numbers capture much of the 
 
 There are limits to this test. I compared nearby summaries rather than exactly identical ones, and checked only this distribution of configurations and the next twelve rounds. Using one previous round's summary to refine the matches made a small improvement, rather than none. That does not establish that the present summary contains everything useful from the past, which a Markov description would require. The [Experiment 2b results]({{ site.github.repository_url }}/blob/main/results/experiment2b/README.md) give the estimator and the refinement tests. There were no interventions to test causal emergence, and the variables were supplied throughout.
 
-The next question concerns the learner. For discovery, I would like to see whether a small network can build a useful representation from the raw state, without being given my features, and whether learning it costs more than it saves in later predictions. In fact, finding a useful description may itself be much harder than making predictions once we have it. So I would like to understand whether a system can discover that description cheaply enough, or reuse it often enough, for the initial effort to pay off.
-
-For transfer, I would ask whether that representation helps in a related sorting system with different rules or array sizes. Dedre Gentner's [structure-mapping theory of analogy](https://doi.org/10.1207/s15516709cog0702_3) is a useful reference here: what might transfer is a relationship such as disorder overlapping unreliable exchanges, rather than the identity of a particular position. That is a proposed test, not something the ten random seeds demonstrate.
-
-For adaptation, I would change the task from global recovery to the central element and see whether the system notices that its old summary is inadequate and changes it efficiently. These discovery, transfer and adaptation experiments have not been run. I would also like to compare the supplied summary with a model designed to use neighbouring positions in the raw array. So far we have tested only one learner family. The [research vision](research-vision.md), [next experiments](next-experiments.md) and [research note]({{ site.github.repository_url }}/blob/main/docs/manuscript-draft.md) describe these questions in more detail.
+The next question concerns the learner. I would like to see whether a small network can discover a useful summary from the raw state, without being given my features. Then I would test whether it helps in a sorting system with different rules or array sizes, and whether the learner notices when a new task makes the summary inadequate and revises it. Finding that description may be expensive; it needs to be discovered cheaply enough, or reused often enough, for the initial effort to pay off. These discovery, transfer and adaptation experiments have not been run. So far we have tested only one learner family. The [research vision](research-vision.md), [next experiments](next-experiments.md) and [research note]({{ site.github.repository_url }}/blob/main/docs/manuscript-draft.md) give the proposed tests.
 
 ## 9. The art of forgetting
 
@@ -150,7 +144,7 @@ Ted Chiang explores a related problem in *The Truth of Fact, the Truth of Feelin
 
 This is also why I find the physics example useful. We can work with a macroscopic description while keeping access to finer detail when the question requires it. Perhaps part of intelligence involves learning to make that choice, recognizing a useful relationship in a new setting, and revising the description when it fails.
 
-For now, the result is smaller than that hypothesis. In this sorting system, a summary designed with knowledge of the task helped one kind of learner predict global recovery with less data and computation. The same summary worked worse for a local question, and a separate test found approximate closure for the measured global futures. Whether a system can discover such descriptions for itself, transfer them and adapt them is what I want to investigate next.
+For now, the result is smaller than that hypothesis. In this sorting system, a summary designed with knowledge of the task helped one kind of learner predict global recovery with less data and computation. The same summary worked worse for a local question, and a separate test found that configurations with similar global summaries tended to have similar average futures. Whether a system can discover such descriptions for itself, transfer them and adapt them is what I want to investigate next.
 
 ---
 
