@@ -17,6 +17,5 @@ plugins:
 exclude:
   - figures/*.pdf
   # Preserve the editorial sources in Git, but do not publish them as pages.
-  - index_draft.md
   - editorial-review.md
   - blog-draft.md
