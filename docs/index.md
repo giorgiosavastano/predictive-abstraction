@@ -20,7 +20,7 @@ Let me take you on a short journey through some ideas borrowed from literature, 
 
 ## 1. The man who remembered everything
 
-In 1942, Borges wrote a story that has stuck with me for more than 20 years. The story is about a young man in Uruguay, Ireneo Funes, who falls from a horse and wakes with a perfect memory. What may sound at first like an incredible superpower is quickly revealed to be an almost diabolic problem. Funes's superhuman lossless memory, while it allows him to remember every single detail of every second of his life, every leaf he ever witnessed, also effectively blocks him from forgetting any useless detail, to the point that he is not able to generalize or create abstract concepts. Funes finds it hard to accept that the dog seen at 3:14 from the side has the same name as the dog seen at 3:15 from the front.
+In 1942, Borges wrote a story that has stuck with me for more than 20 years. The story is about a young man in Uruguay, Ireneo Funes, who falls from a horse and wakes up with superhuman memory, which allows him to recall the shape of clouds at any given time, geometric forms of a changing flame, and essentially every single detail of his life. What may sound at first like an incredible gift is quickly revealed to be a diabolical curse, as Funes is unable to disregard useless details and struggles to generalize or form abstract concepts. When Funes sees a dog, he is so fixated on every detail that he finds it hard to accept that it is the same dog he finds a few seconds later.
 
 From this first story, I want you to take home the importance of forgetting, of compressing information down to useful abstractions.
 
