@@ -10,7 +10,7 @@ image:
 
 *By Giorgio Savastano, PhD · [Background and experience](https://www.linkedin.com/in/giorgiosavastano/) · [Publications](https://scholar.google.com/citations?user=loRr1d8AAAAJ&hl=en)*
 
-When data and time are limited, can a machine learn to predict a system better from a useful set of abstractions than from every available detail?
+**When data and time are limited, can a machine learn to predict a system better from a useful set of abstractions than from every available detail?**
 
 As humans, sometimes we can remember every word of a conversation and still miss its point. That gap between having information and understanding is what fascinates me here, especially when we talk about intelligence in machines.
 
@@ -34,15 +34,15 @@ Here we are going to borrow the distinction between the existence of information
 
 There is a recent [video by 3Blue1Brown, *Reinventing Entropy*](https://www.youtube.com/watch?v=l6DKRf-fAAM) exploring the mathematics of compression as part of a series connecting it to how AI systems learn. The thought-provoking and attention-grabbing idea behind the series is that intelligence is compression. My idea is somewhat adjacent to this one, as finding abstractions can be seen as an information compression process: ignoring what is not useful and keeping only what is. We find examples of these useful compressions everywhere in the laws of physics that we use to describe reality and solve specific problems. My favourite example is in thermodynamics, where, instead of following the evolution of billions of molecules of gas, we can simply keep track of 3 numbers, T, P and V. For a fixed amount of a simple gas of known composition, these are enough to describe its macroscopic equilibrium state. For an ideal gas, the equation of state relates them, so only two are independent once the amount of gas is fixed.
 
-So here we start seeing clearly an important caveat: these abstractions may be task dependent, meaning they may be good for describing specific problems and may not necessarily be enough for every situation.
+**So here we start seeing clearly an important caveat: these abstractions may be task dependent, meaning they may be good for describing specific problems and may not necessarily be enough for every situation.**
 
 ## 4. What if intelligence works similarly?
 
-Put the three stories together and a working hypothesis suggests itself. Perhaps one important component of intelligence is recognizing the level of description at which a complex system becomes easiest to understand. A system that does this, when it meets a new situation, figures out quickly which details matter for what it is trying to do, builds a description that keeps those and drops the rest, notices that the description it built resembles one it has used before, and abandons it when it stops working. Not compression for its own sake, but *abstraction*: compression that preserves the relationships that make the information useful. And, if the physics is any guide, the relationships worth preserving are often the ones emerging from the system.
+Put the three stories together and a working hypothesis suggests itself. **Perhaps one important component of intelligence is recognizing the level of description at which a complex system becomes easiest to understand.** A system that does this, when it meets a new situation, figures out quickly which details matter for what it is trying to do, builds a description that keeps those and drops the rest, notices that the description it built resembles one it has used before, and abandons it when it stops working. Not compression for its own sake, but *abstraction*: compression that preserves the relationships that make the information useful. And, if the physics is any guide, the relationships worth preserving are often the ones emerging from the system.
 
 ## 5. From the idea to a test
 
-To investigate this idea, we need to distinguish between finding a useful set of abstractions and using them. Here, I start with the second question: can a model learn from a useful set of abstractions without having to find them for itself?
+To investigate this idea, we need to distinguish between finding a useful set of abstractions and using them. **Here, I start with the second question: can a model learn from a useful set of abstractions without having to find them for itself?**
 
 There is another question behind the physics example. Some useful descriptions reflect collective behaviour produced by the system itself. This is the sense of emergence that interests me here. Pressure comes from many molecules interacting; it is not a property of one molecule. Therefore, some emergent properties of the system may be useful things to capture in an abstraction. However, as we will see, it always depends on the questions we are asking about the system.
 
@@ -82,9 +82,9 @@ Each training example pairs one starting configuration and its swap probabilitie
 
 In this figure, the orange line represents a predictor trained on the summary, and the blue line one trained on the full state. The green line uses random combinations, while the yellow line uses initial disorder alone. Moving to the right gives each predictor more training examples.
 
-The carefully engineered summary beat the full state at every tested model size, especially with fewer training examples. With 250 examples, its error was 0.455 against 0.807 for the full state. However, the full state is catching up fast as we increase the number of examples. At 5,000 examples the errors were 0.332 and 0.401. The figure uses a model size selected separately for each description on validation data. These are averages over the ten seeds; the shaded regions show 95% confidence intervals.
+**The carefully engineered summary beat the full state at every tested model size, especially with fewer training examples.** With 250 examples, its error was 0.455 against 0.807 for the full state. However, the full state is catching up fast as we increase the number of examples. At 5,000 examples the errors were 0.332 and 0.401. The figure uses a model size selected separately for each description on validation data. These are averages over the ten seeds; the shaded regions show 95% confidence intervals.
 
-What I take from this is that the summary helps most when the learner has access to fewer training examples. Since I compute the summary from the full state, it cannot contain extra information about the target. That does not guarantee that this particular predictor will eventually find the right summary, or that the summary I provided is the optimal one. The predictor could find a better one.
+What I take from this is that the summary helps most when the learner has access to fewer training examples. **Since I compute the summary from the full state, it cannot contain extra information about the target.** That does not guarantee that this particular predictor will eventually find the right summary, or that the summary I provided is the optimal one. The predictor could find a better one.
 
 There was also an important practical difference in computing time. At 5,000 examples, a medium model with access to the summary reached an error of 0.366 in about 0.31 seconds, while a large model with the full state reached 0.401 in about 4.06 seconds. That is about one-thirteenth of the measured time, including feature extraction, fitting and test prediction on the same machine. However, this does not include the human effort and time needed to design the summary.
 
@@ -98,7 +98,7 @@ Here I kept the model size fixed and trained on 5,000 examples. Each line uses a
 
 The upper axis counts input numbers per example for the orange and green lines. With 8 regions, that means 27 numbers; the purple line uses 24.
 
-One thing that is immediately clear is that most of the benefit was already present in the three global numbers. A predictor with access only to these 3 numbers (yellow horizontal line) already reached 0.405. Adding regional detail helped, but the full summary's error changed relatively little across resolutions.
+**One thing that is immediately clear is that most of the benefit was already present in the three global numbers.** A predictor with access only to these 3 numbers (yellow horizontal line) already reached 0.405. Adding regional detail helped, but the full summary's error changed relatively little across resolutions.
 
 Interestingly, when I kept only regional statistics (purple line), four to eight regions did much better than sixty-four. There seems to be a trade-off between losing useful detail and giving the learner too many quantities to fit.
 
@@ -110,7 +110,7 @@ Then I changed the objective of the predictor: it now has to predict which numbe
 
 In this figure, the left panel repeats the global question about remaining disorder, while the right panel shows the new local question. The blue and orange lines represent the full state and the summary. On the right, their ranking is reversed: the predictor with access to the full state makes smaller errors.
 
-The full state now beat the summary in all ten seeds, at every tested budget and model size. For example, at 5,000 examples with validation-selected model sizes, its error was 3.39 against 4.76. These errors concern element values, rather than the average displacement used in the global task. Finer regional descriptions generally helped, but even the sixty-four-region description reached only 4.15. It still omits explicit element identities and displacement signs.
+**The full state now beat the summary in all ten seeds, at every tested budget and model size.** For example, at 5,000 examples with validation-selected model sizes, its error was 3.39 against 4.76. These errors concern element values, rather than the average displacement used in the global task. Finer regional descriptions generally helped, but even the sixty-four-region description reached only 4.15. It still omits explicit element identities and displacement signs.
 
 This brings us back to the caveat in the physics example. The summary was built for a question about the whole array's recovery. It leaves out detail that matters for a question about one particular position. Better predictive learning with that summary does not by itself show understanding, or intelligence.
 
@@ -130,7 +130,7 @@ Interestingly, the full microscopic state scored worse than the three global num
 
 What I take from this is that the three global numbers seem to capture much of the collective recovery behaviour of the array, at least for the configurations and time horizons tested here.
 
-However, this experiment only compares estimated average futures, not the full range of possible outcomes. It doesn't establish that the macroscopic variables form an autonomous dynamical system or demonstrate causal emergence. The [Experiment 2b results]({{ site.github.repository_url }}/blob/main/results/experiment2b/README.md) explain the method, its limitations, and the additional tests in detail.
+**However, this experiment only compares estimated average futures, not the full range of possible outcomes.** It doesn't establish that the macroscopic variables form an autonomous dynamical system or demonstrate causal emergence. The [Experiment 2b results]({{ site.github.repository_url }}/blob/main/results/experiment2b/README.md) explain the method, its limitations, and the additional tests in detail.
 
 ## 9. The art of forgetting
 
@@ -140,7 +140,7 @@ Ted Chiang explores a related problem in *The Truth of Fact, the Truth of Feelin
 
 This is also why I find the physics example useful. We can work with a macroscopic description while keeping access to finer detail when the question requires it. Perhaps part of intelligence involves learning to make that choice, recognizing a useful relationship in a new setting, and revising the description when it fails.
 
-For now, the result is smaller than that hypothesis. In this sorting system, a summary designed with knowledge of the task helped one kind of learner predict global recovery with less data and computation. The same summary worked worse for a local question, and a separate test found that configurations with similar global summaries tended to have similar average futures. Whether a system can discover such descriptions for itself, transfer them and adapt them is what I want to investigate next. I also want to know whether the effort of discovering a summary can pay for itself in later predictions.
+For now, the result is smaller than that hypothesis. In this sorting system, a summary designed with knowledge of the task helped one kind of learner predict global recovery with less data and computation. The same summary worked worse for a local question, and a separate test found that configurations with similar global summaries tended to have similar average futures. **Whether a system can discover such descriptions for itself, transfer them and adapt them is what I want to investigate next.** I also want to know whether the effort of discovering a summary can pay for itself in later predictions.
 
 ---
 
